@@ -4,4 +4,4 @@ Allow: /
 Disallow: /tmp/
 Disallow: /assets/
 
-Sitemap: /sitemap.xml
+Sitemap: https://blog.ohtoai.fun/sitemap.xml

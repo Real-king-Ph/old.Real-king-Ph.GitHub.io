@@ -4,17 +4,17 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"><title>Lecture #05: Storage Models & Compression - RK's blog</title>
 
 <meta name="description" content="Trackerrefer to Sliderefer to Notemindmaproot((Lecture 5))  Workloads    OLTP    OLAP    HTAP  Storage Models    N-Ary    DSM  Columnar Compression    Run-Le...">
-<link rel="canonical" href="https://blog.ohtoai.fun/cmu15-445/2023/10/19/Lecture-5-Storage-Models-Compression.html"><link rel="alternate" type="application/rss+xml" title="RK's blog" href="/feed.xml"><!-- start favicons snippet, use https://realfavicongenerator.net/ --><link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png"><link rel="manifest" href="/assets/site.webmanifest"><link rel="mask-icon" href="/assets/safari-pinned-tab.svg" color="#fc4d50"><link rel="shortcut icon" href="/assets/favicon.ico">
+<link rel="canonical" href="https://blog.ohtoai.fun/old.Real-king-Ph.GitHub.io/jekyll_archive//old.Real-king-Ph.GitHub.io/jekyll_archive/cmu15-445/2023/10/19/Lecture-5-Storage-Models-Compression.html"><link rel="alternate" type="application/rss+xml" title="RK's blog" href="/old.Real-king-Ph.GitHub.io/jekyll_archive/feed.xml"><!-- start favicons snippet, use https://realfavicongenerator.net/ --><link rel="apple-touch-icon" sizes="180x180" href="/old.Real-king-Ph.GitHub.io/jekyll_archive/assets/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="/old.Real-king-Ph.GitHub.io/jekyll_archive/assets/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="/old.Real-king-Ph.GitHub.io/jekyll_archive/assets/favicon-16x16.png"><link rel="manifest" href="/old.Real-king-Ph.GitHub.io/jekyll_archive/assets/site.webmanifest"><link rel="mask-icon" href="/old.Real-king-Ph.GitHub.io/jekyll_archive/assets/safari-pinned-tab.svg" color="#fc4d50"><link rel="shortcut icon" href="/old.Real-king-Ph.GitHub.io/jekyll_archive/assets/favicon.ico">
 
-<meta name="msapplication-TileColor" content="#ffc40d"><meta name="msapplication-config" content="/assets/browserconfig.xml">
+<meta name="msapplication-TileColor" content="#ffc40d"><meta name="msapplication-config" content="/old.Real-king-Ph.GitHub.io/jekyll_archive/assets/browserconfig.xml">
 
 <meta name="theme-color" content="#ffffff">
-<!-- end favicons snippet --><link rel="stylesheet" href="/assets/css/main.css"><link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.2/css/all.min.css" ><!-- start custom head snippets -->
+<!-- end favicons snippet --><link rel="stylesheet" href="/old.Real-king-Ph.GitHub.io/jekyll_archive/assets/css/main.css"><link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.2/css/all.min.css" ><!-- start custom head snippets -->
 <link href='//cdn.jsdelivr.net/npm/@waline/client/dist/waline.css' rel='stylesheet' />
 <!-- end custom head snippets -->
-<script src="/assets/scripts/utils/utils.js"></script>
-    <script src = "/assets/scripts/lib/throttle.js"></script>
-    <script src = "/assets/scripts/lib/lazyload.js"></script>
+<script src="/old.Real-king-Ph.GitHub.io/jekyll_archive/assets/scripts/utils/utils.js"></script>
+    <script src = "/old.Real-king-Ph.GitHub.io/jekyll_archive/assets/scripts/lib/throttle.js"></script>
+    <script src = "/old.Real-king-Ph.GitHub.io/jekyll_archive/assets/scripts/lib/lazyload.js"></script>
 
     <!-- ms clarity --><script>
   (function() {
@@ -40,7 +40,7 @@
         }
       },
       paths: {
-        search_js: '/assets/search.js'
+        search_js: '/old.Real-king-Ph.GitHub.io/jekyll_archive/assets/search.js'
       }
     };
     window.TEXT_VARIABLES = TEXT_VARIABLES;
@@ -54,9 +54,9 @@
       <div class="page__main-inner"><div class="page__header d-print-none"><header class="header"><div class="main">
       <div class="header__title">
         <div class="header__brand"><svg width="64px" height="64px" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><title>love-france-heart-ico</title><g id="love-france-heart-ico"><circle cx="34" cy="35" r="23" style="fill:#e5efef"/><path d="M22.973,8.665a6.775,6.775,0,0,0-4.764,2.005,6.777,6.777,0,0,0-4.765-2.005c-3.947,0-7.147,3.5-7.147,7.826s8.338,11.738,11.912,14.347C21.782,28.229,30.12,20.813,30.12,16.491S26.92,8.665,22.973,8.665Z" style="fill:#f53e28;stroke:#4c241d;stroke-linecap:round;stroke-linejoin:round;stroke-width:2px"/><path d="M49.973,35.665a6.775,6.775,0,0,0-4.764,2.005,6.777,6.777,0,0,0-4.765-2.005c-3.947,0-7.147,3.5-7.147,7.826s8.338,11.738,11.912,14.347C48.782,55.229,57.12,47.813,57.12,43.491S53.92,35.665,49.973,35.665Z" style="fill:#fff;stroke:#4c241d;stroke-linecap:round;stroke-linejoin:round;stroke-width:2px"/><line x1="26" y1="35" x2="26" y2="37" style="fill:none;stroke:#4c241d;stroke-linecap:round;stroke-linejoin:round;stroke-width:2px"/><line x1="26" y1="41" x2="26" y2="43" style="fill:none;stroke:#4c241d;stroke-linecap:round;stroke-linejoin:round;stroke-width:2px"/><line x1="22" y1="39" x2="24" y2="39" style="fill:none;stroke:#4c241d;stroke-linecap:round;stroke-linejoin:round;stroke-width:2px"/><line x1="28" y1="39" x2="30" y2="39" style="fill:none;stroke:#4c241d;stroke-linecap:round;stroke-linejoin:round;stroke-width:2px"/><circle cx="37.5" cy="7.5" r="2.5" style="fill:none;stroke:#4c241d;stroke-linecap:round;stroke-linejoin:round;stroke-width:2px"/><circle cx="4.5" cy="59.5" r="2.5" style="fill:none;stroke:#4c241d;stroke-linecap:round;stroke-linejoin:round;stroke-width:2px"/><path d="M32.651,29.1a1.069,1.069,0,1,1-1.069-1.069A1.069,1.069,0,0,1,32.651,29.1Z" style="fill:#4c241d"/><path d="M59.651,27.1a1.069,1.069,0,1,1-1.069-1.069A1.069,1.069,0,0,1,59.651,27.1Z" style="fill:#4c241d"/><path d="M6.651,4.1A1.069,1.069,0,1,1,5.582,3.029,1.069,1.069,0,0,1,6.651,4.1Z" style="fill:#4c241d"/><path d="M58.651,58.1a1.069,1.069,0,1,1-1.069-1.069A1.069,1.069,0,0,1,58.651,58.1Z" style="fill:#4c241d"/><path d="M5.651,32.1a1.069,1.069,0,1,1-1.069-1.069A1.069,1.069,0,0,1,5.651,32.1Z" style="fill:#4c241d"/><path d="M46.04,18.49a2.605,2.605,0,0,0-1.831.77,2.609,2.609,0,0,0-1.832-.77A2.887,2.887,0,0,0,39.63,21.5c0,1.661,3.2,4.512,4.579,5.515,1.373-1,4.578-3.854,4.578-5.515A2.887,2.887,0,0,0,46.04,18.49Z" style="fill:#9dc1e4;stroke:#4c241d;stroke-linecap:round;stroke-linejoin:round;stroke-width:2px"/><path d="M57.04,4.49a2.605,2.605,0,0,0-1.831.77,2.609,2.609,0,0,0-1.832-.77A2.887,2.887,0,0,0,50.63,7.5c0,1.661,3.2,4.512,4.579,5.515,1.373-1,4.578-3.854,4.578-5.515A2.887,2.887,0,0,0,57.04,4.49Z" style="fill:#fff;stroke:#4c241d;stroke-linecap:round;stroke-linejoin:round;stroke-width:2px"/><path d="M14.04,39.49a2.605,2.605,0,0,0-1.831.77,2.609,2.609,0,0,0-1.832-.77A2.887,2.887,0,0,0,7.63,42.5c0,1.661,3.205,4.512,4.579,5.515,1.373-1,4.578-3.854,4.578-5.515A2.887,2.887,0,0,0,14.04,39.49Z" style="fill:#9dc1e4;stroke:#4c241d;stroke-linecap:round;stroke-linejoin:round;stroke-width:2px"/><path d="M27.04,51.49a2.605,2.605,0,0,0-1.831.77,2.609,2.609,0,0,0-1.832-.77A2.887,2.887,0,0,0,20.63,54.5c0,1.661,3.205,4.512,4.579,5.515,1.373-1,4.578-3.854,4.578-5.515A2.887,2.887,0,0,0,27.04,51.49Z" style="fill:#f53e28;stroke:#4c241d;stroke-linecap:round;stroke-linejoin:round;stroke-width:2px"/></g></svg><a title="不知名211大三在读
-" href="/">RK's blog</a></div>
+" href="/old.Real-king-Ph.GitHub.io/jekyll_archive/">RK's blog</a></div>
       </div><nav class="navigation">
-        <ul><li class="navigation__item"><a href="/archive/">Archive</a></li><li class="navigation__item"><a href="/about/">About</a></li><li class="navigation__item"><a href="/Friend-Link-House/">Links</a></li><li class="navigation__item"><a href="https://blogroll.rklittle.workers.dev/">blogroll</a></li></ul>
+        <ul><li class="navigation__item"><a href="/old.Real-king-Ph.GitHub.io/jekyll_archive/archive/">Archive</a></li><li class="navigation__item"><a href="/old.Real-king-Ph.GitHub.io/jekyll_archive/about/">About</a></li><li class="navigation__item"><a href="/old.Real-king-Ph.GitHub.io/jekyll_archive/Friend-Link-House/">Links</a></li><li class="navigation__item"><a href="https://blogroll.rklittle.workers.dev/">blogroll</a></li></ul>
       </nav></div>
   </header>
 </div><div class="page__content"><div class ="main"><div class="grid grid--reverse">
@@ -73,10 +73,10 @@
             href="https://github.com/Real-king-Ph/Real-king-Ph.GitHub.io/tree/master/_posts/2023-09-12M/2023-10-19-Lecture-5-Storage-Models-Compression.md">
             <i class="far fa-edit"></i></a></div><meta itemprop="headline" content="Lecture #05: Storage Models & Compression"><div class="article__info clearfix"><ul class="left-col menu"><li>
               <a class="button button--secondary button--pill button--sm"
-                href="/archive/?tag=%E6%95%B0%E6%8D%AE%E5%BA%93">数据库</a>
+                href="/old.Real-king-Ph.GitHub.io/jekyll_archive/archive/?tag=%E6%95%B0%E6%8D%AE%E5%BA%93">数据库</a>
             </li><li>
               <a class="button button--secondary button--pill button--sm"
-                href="/archive/?tag=CMU15-445">CMU15-445</a>
+                href="/old.Real-king-Ph.GitHub.io/jekyll_archive/archive/?tag=CMU15-445">CMU15-445</a>
             </li></ul><ul class="right-col menu"><li><i class="far fa-calendar-alt"></i> <span>Oct 19, 2023</span>
             </li><li>
               <i class="far fa-edit"></i> <span>Oct 23, 2023</span>
@@ -305,16 +305,16 @@ Oracle OZIP (2014), Zstd (2015)</p>
 </section><div class="d-print-none"><footer class="article__footer"><meta itemprop="dateModified" content="2023-10-19T13:42:33+00:00"><!-- start custom article footer snippet -->
 
 <!-- end custom article footer snippet -->
-<div class="article__subscribe"><div class="subscribe"><i class="fas fa-rss"></i> <a type="application/rss+xml" href="/feed.xml">Subscribe</a></div>
+<div class="article__subscribe"><div class="subscribe"><i class="fas fa-rss"></i> <a type="application/rss+xml" href="/old.Real-king-Ph.GitHub.io/jekyll_archive/feed.xml">Subscribe</a></div>
 </div><div class="article__license"><div class="license">
     <p>This work is licensed under <a itemprop="license" rel="license" href="https://github.com/Real-king-Ph/Real-king-Ph.GitHub.io/blob/master/LICENSE">The MIT License</a> license.
     </p>
   </div></div></footer>
-<div class="article__section-navigator clearfix"><div class="previous"><span>PREVIOUS</span><a href="/2023/10/15/heart-of-Clean-Springs.html">清泉之心</a></div><div class="next"><span>NEXT</span><a href="/cmu15-445/2023/10/23/Lecture-6-Memory-Management.html">Lecture #06: Memory Management</a></div></div></div>
+<div class="article__section-navigator clearfix"><div class="previous"><span>PREVIOUS</span><a href="/old.Real-king-Ph.GitHub.io/jekyll_archive/2023/10/15/heart-of-Clean-Springs.html">清泉之心</a></div><div class="next"><span>NEXT</span><a href="/old.Real-king-Ph.GitHub.io/jekyll_archive/cmu15-445/2023/10/23/Lecture-6-Memory-Management.html">Lecture #06: Memory Management</a></div></div></div>
 
 </div>
 
-<script src="/assets/scripts/article.js">
+<script src="/old.Real-king-Ph.GitHub.io/jekyll_archive/assets/scripts/article.js">
 </script>
 
 
@@ -322,11 +322,11 @@ Oracle OZIP (2014), Zstd (2015)</p>
   
   
   <a class="button button--outline-secondary button--pill"
-    href="/categories/CMU15-445">CMU15-445</a>
+    href="/old.Real-king-Ph.GitHub.io/jekyll_archive/categories/CMU15-445">CMU15-445</a>
   
   
 </div><div id="totop"
-   style="position: fixed; bottom: 90px; right: 40px; opacity: 0;background: url(/assets/images/topbutton.png) no-repeat center center;">
+   style="position: fixed; bottom: 90px; right: 40px; opacity: 0;background: url(/old.Real-king-Ph.GitHub.io/jekyll_archive/assets/images/topbutton.png) no-repeat center center;">
    <a id="totop_a" title="Back To Top" style="width:64px; height:64px;display: block;"></a>
 </div>
 </div><section class="page__comments d-print-none"></section></article><!-- start custom main bottom snippet -->
@@ -362,12 +362,12 @@ Oracle OZIP (2014), Zstd (2015)</p>
   </div>
 </footer>
 </div></div>
-    </div><script src="/assets/scripts/lib/modal.js"></script><div class="modal modal--overflow page__search-modal d-print-none js-page-search-modal"></div></div>
+    </div><script src="/old.Real-king-Ph.GitHub.io/jekyll_archive/assets/scripts/lib/modal.js"></script><div class="modal modal--overflow page__search-modal d-print-none js-page-search-modal"></div></div>
 
 
-<script src="/assets/scripts/lib/scroll-to.js"></script>
-<script src="/assets/scripts/lib/affix.js"></script>
-<script src="/assets/scripts/lib/toc.js"></script><script src="/assets/scripts/page.js"></script><!-- toc must before affix, since affix need to konw toc' height. --><script src="/assets/scripts/aside/toc.js"></script><script src="/assets/scripts/aside/affix.js"></script><script>
+<script src="/old.Real-king-Ph.GitHub.io/jekyll_archive/assets/scripts/lib/scroll-to.js"></script>
+<script src="/old.Real-king-Ph.GitHub.io/jekyll_archive/assets/scripts/lib/affix.js"></script>
+<script src="/old.Real-king-Ph.GitHub.io/jekyll_archive/assets/scripts/lib/toc.js"></script><script src="/old.Real-king-Ph.GitHub.io/jekyll_archive/assets/scripts/page.js"></script><!-- toc must before affix, since affix need to konw toc' height. --><script src="/old.Real-king-Ph.GitHub.io/jekyll_archive/assets/scripts/aside/toc.js"></script><script src="/old.Real-king-Ph.GitHub.io/jekyll_archive/assets/scripts/aside/affix.js"></script><script>
   window.Lazyload.js('https://cdn.bootcdn.net/ajax/libs/mermaid/10.4.0/mermaid.min.js', function() {
     mermaid.initialize({
       startOnLoad: true
@@ -377,7 +377,7 @@ Oracle OZIP (2014), Zstd (2015)</p>
 </script>
 
     </div>
-    <script src="/assets/scripts/common.js"></script>
+    <script src="/old.Real-king-Ph.GitHub.io/jekyll_archive/assets/images/topbutton.png"></script>
   </body>
 </html>
 
