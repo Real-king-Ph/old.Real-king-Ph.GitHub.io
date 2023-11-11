@@ -1,0 +1,196 @@
+<!DOCTYPE html><html lang="en">
+  <head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"><title>中位数切分 - RK's blog</title>
+
+<meta name="description" content="https://ac.nowcoder.com/acm/contest/23106/F和其他方法比起来，我写的方法可能不是那么优，但也不妨作为一种思路。我们将比 $m$ 小的数设为 $1$，反之设为 $0$。那么我们就将得到一个只包含 01 的数组。我们将这个数组求出其前缀和$S$。对于区间 $(l ,r]$ 而...">
+<link rel="canonical" href="https://blog.ohtoai.fun/algorithm/2022/01/25/%E4%B8%AD%E4%BD%8D%E6%95%B0%E5%88%87%E5%88%86.html"><link rel="alternate" type="application/rss+xml" title="RK's blog" href="/feed.xml"><!-- start favicons snippet, use https://realfavicongenerator.net/ --><link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png"><link rel="manifest" href="/assets/site.webmanifest"><link rel="mask-icon" href="/assets/safari-pinned-tab.svg" color="#fc4d50"><link rel="shortcut icon" href="/assets/favicon.ico">
+
+<meta name="msapplication-TileColor" content="#ffc40d"><meta name="msapplication-config" content="/assets/browserconfig.xml">
+
+<meta name="theme-color" content="#ffffff">
+<!-- end favicons snippet --><link rel="stylesheet" href="/assets/css/main.css"><link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.2/css/all.min.css" ><!-- start custom head snippets -->
+<link href='//cdn.jsdelivr.net/npm/@waline/client/dist/waline.css' rel='stylesheet' />
+<!-- end custom head snippets -->
+<script src="/assets/scripts/utils/utils.js"></script>
+    <script src = "/assets/scripts/lib/throttle.js"></script>
+    <script src = "/assets/scripts/lib/lazyload.js"></script>
+
+    <!-- ms clarity --><script>
+  (function() {
+    var TEXT_VARIABLES = {
+      version: '2.2.6',
+      sources: {
+        font_awesome: 'https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.2/css/all.min.css',
+        jquery: 'https://cdn.bootcdn.net/ajax/libs/jquery/3.1.1/jquery.min.js',
+        leancloud_js_sdk: '//cdn.jsdelivr.net/npm/leancloud-storage@3.13.2/dist/av-min.js',
+        chart: 'https://cdn.bootcdn.net/ajax/libs/Chart.js/4.4.0/chart.umd.min.js',
+        gitalk: {
+          js: 'https://cdn.bootcdn.net/ajax/libs/gitalk/1.2.2/gitalk.min.js',
+          css: 'https://cdn.bootcdn.net/ajax/libs/gitalk/1.2.2/gitalk.min.css'
+        },
+        valine: 'https://unpkg.com/valine/dist/Valine.min.js',
+        waline: 'https://cdn.jsdelivr.net/npm/@waline/client/dist/waline.js',
+        mathjax: 'https://cdn.bootcdn.net/ajax/libs/mathjax/3.2.0/es5/tex-chtml.js',
+        mermaid: 'https://cdn.bootcdn.net/ajax/libs/mermaid/10.4.0/mermaid.min.js'
+      },
+      site: {
+        toc: {
+          selectors: 'h2,h3,h4'
+        }
+      },
+      paths: {
+        search_js: '/assets/search.js'
+      }
+    };
+    window.TEXT_VARIABLES = TEXT_VARIABLES;
+  })();
+</script>
+</head>
+  <body>
+    <div class="root" data-is-touch="false">
+      <div class="layout--page js-page-root"><div class="page__main js-page-main page__viewport has-aside cell cell--auto">
+
+      <div class="page__main-inner"><div class="page__header d-print-none"><header class="header"><div class="main">
+      <div class="header__title">
+        <div class="header__brand"><svg width="64px" height="64px" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><title>love-france-heart-ico</title><g id="love-france-heart-ico"><circle cx="34" cy="35" r="23" style="fill:#e5efef"/><path d="M22.973,8.665a6.775,6.775,0,0,0-4.764,2.005,6.777,6.777,0,0,0-4.765-2.005c-3.947,0-7.147,3.5-7.147,7.826s8.338,11.738,11.912,14.347C21.782,28.229,30.12,20.813,30.12,16.491S26.92,8.665,22.973,8.665Z" style="fill:#f53e28;stroke:#4c241d;stroke-linecap:round;stroke-linejoin:round;stroke-width:2px"/><path d="M49.973,35.665a6.775,6.775,0,0,0-4.764,2.005,6.777,6.777,0,0,0-4.765-2.005c-3.947,0-7.147,3.5-7.147,7.826s8.338,11.738,11.912,14.347C48.782,55.229,57.12,47.813,57.12,43.491S53.92,35.665,49.973,35.665Z" style="fill:#fff;stroke:#4c241d;stroke-linecap:round;stroke-linejoin:round;stroke-width:2px"/><line x1="26" y1="35" x2="26" y2="37" style="fill:none;stroke:#4c241d;stroke-linecap:round;stroke-linejoin:round;stroke-width:2px"/><line x1="26" y1="41" x2="26" y2="43" style="fill:none;stroke:#4c241d;stroke-linecap:round;stroke-linejoin:round;stroke-width:2px"/><line x1="22" y1="39" x2="24" y2="39" style="fill:none;stroke:#4c241d;stroke-linecap:round;stroke-linejoin:round;stroke-width:2px"/><line x1="28" y1="39" x2="30" y2="39" style="fill:none;stroke:#4c241d;stroke-linecap:round;stroke-linejoin:round;stroke-width:2px"/><circle cx="37.5" cy="7.5" r="2.5" style="fill:none;stroke:#4c241d;stroke-linecap:round;stroke-linejoin:round;stroke-width:2px"/><circle cx="4.5" cy="59.5" r="2.5" style="fill:none;stroke:#4c241d;stroke-linecap:round;stroke-linejoin:round;stroke-width:2px"/><path d="M32.651,29.1a1.069,1.069,0,1,1-1.069-1.069A1.069,1.069,0,0,1,32.651,29.1Z" style="fill:#4c241d"/><path d="M59.651,27.1a1.069,1.069,0,1,1-1.069-1.069A1.069,1.069,0,0,1,59.651,27.1Z" style="fill:#4c241d"/><path d="M6.651,4.1A1.069,1.069,0,1,1,5.582,3.029,1.069,1.069,0,0,1,6.651,4.1Z" style="fill:#4c241d"/><path d="M58.651,58.1a1.069,1.069,0,1,1-1.069-1.069A1.069,1.069,0,0,1,58.651,58.1Z" style="fill:#4c241d"/><path d="M5.651,32.1a1.069,1.069,0,1,1-1.069-1.069A1.069,1.069,0,0,1,5.651,32.1Z" style="fill:#4c241d"/><path d="M46.04,18.49a2.605,2.605,0,0,0-1.831.77,2.609,2.609,0,0,0-1.832-.77A2.887,2.887,0,0,0,39.63,21.5c0,1.661,3.2,4.512,4.579,5.515,1.373-1,4.578-3.854,4.578-5.515A2.887,2.887,0,0,0,46.04,18.49Z" style="fill:#9dc1e4;stroke:#4c241d;stroke-linecap:round;stroke-linejoin:round;stroke-width:2px"/><path d="M57.04,4.49a2.605,2.605,0,0,0-1.831.77,2.609,2.609,0,0,0-1.832-.77A2.887,2.887,0,0,0,50.63,7.5c0,1.661,3.2,4.512,4.579,5.515,1.373-1,4.578-3.854,4.578-5.515A2.887,2.887,0,0,0,57.04,4.49Z" style="fill:#fff;stroke:#4c241d;stroke-linecap:round;stroke-linejoin:round;stroke-width:2px"/><path d="M14.04,39.49a2.605,2.605,0,0,0-1.831.77,2.609,2.609,0,0,0-1.832-.77A2.887,2.887,0,0,0,7.63,42.5c0,1.661,3.205,4.512,4.579,5.515,1.373-1,4.578-3.854,4.578-5.515A2.887,2.887,0,0,0,14.04,39.49Z" style="fill:#9dc1e4;stroke:#4c241d;stroke-linecap:round;stroke-linejoin:round;stroke-width:2px"/><path d="M27.04,51.49a2.605,2.605,0,0,0-1.831.77,2.609,2.609,0,0,0-1.832-.77A2.887,2.887,0,0,0,20.63,54.5c0,1.661,3.205,4.512,4.579,5.515,1.373-1,4.578-3.854,4.578-5.515A2.887,2.887,0,0,0,27.04,51.49Z" style="fill:#f53e28;stroke:#4c241d;stroke-linecap:round;stroke-linejoin:round;stroke-width:2px"/></g></svg><a title="不知名211大三在读
+" href="/">RK's blog</a></div>
+      </div><nav class="navigation">
+        <ul><li class="navigation__item"><a href="/archive/">Archive</a></li><li class="navigation__item"><a href="/about/">About</a></li><li class="navigation__item"><a href="/Friend-Link-House/">Links</a></li><li class="navigation__item"><a href="https://blogroll.rklittle.workers.dev/">blogroll</a></li></ul>
+      </nav></div>
+  </header>
+</div><div class="page__content"><div class ="main"><div class="grid grid--reverse">
+
+              <div class="col-aside d-print-none js-col-aside"><aside class="page__aside js-page-aside"><div class="toc-aside js-toc-root"></div>
+</aside></div>
+
+              <div class="col-main cell cell--auto"><!-- start custom main top snippet -->
+
+<!-- end custom main top snippet -->
+<article itemscope itemtype="http://schema.org/Article"><div class="article__header"><header><h1>中位数切分</h1></header><span class="split-space">&nbsp;</span>
+          <a class="edit-on-github"
+            title="Edit on Github"
+            href="https://github.com/Real-king-Ph/Real-king-Ph.GitHub.io/tree/master/_posts/2022-01-03M/2022-01-25-中位数切分.md">
+            <i class="far fa-edit"></i></a></div><meta itemprop="headline" content="中位数切分"><div class="article__info clearfix"><ul class="left-col menu"><li>
+              <a class="button button--secondary button--pill button--sm"
+                href="/archive/?tag=%E7%BA%BF%E6%AE%B5%E6%A0%91">线段树</a>
+            </li><li>
+              <a class="button button--secondary button--pill button--sm"
+                href="/archive/?tag=%E5%89%8D%E7%BC%80%E5%92%8C">前缀和</a>
+            </li><li>
+              <a class="button button--secondary button--pill button--sm"
+                href="/archive/?tag=%E6%95%B0%E5%AD%A6">数学</a>
+            </li></ul><ul class="right-col menu"><li><i class="far fa-calendar-alt"></i> <span>Jan 25, 2022</span>
+            </li><li><i class="fa-solid fa-eye"></i> <span class="waline-pageview-count" data-path="/algorithm/2022/01/25/%E4%B8%AD%E4%BD%8D%E6%95%B0%E5%88%87%E5%88%86.html">0</span> views</li></ul></div><meta itemprop="author" content="phrk"/><meta itemprop="datePublished" content="2022-01-25T00:00:00+00:00">
+    <meta itemprop="keywords" content="线段树,前缀和,数学"><div class="js-article-content"><div class="layout--article"><!-- start custom article top snippet -->
+
+<!-- end custom article top snippet -->
+<div class="article__content" itemprop="articleBody"><p><a href="https://ac.nowcoder.com/acm/contest/23106/F">https://ac.nowcoder.com/acm/contest/23106/F</a></p>
+
+<p>和其他方法比起来，我写的方法可能不是那么优，但也不妨作为一种思路。</p>
+
+<p>我们将比 $m$ 小的数设为 $1$，反之设为 $0$。</p>
+
+<p>那么我们就将得到一个只包含 01 的数组。我们将这个数组求出其前缀和$S$。</p>
+
+<p>对于区间 $(l ,r]$ 而言。只要我们满足 $S[r] - S[l] &lt;= \frac{(r - l - 1)}{2}$ 条件即可。其中 $0 \le l &lt; r \le n$。</p>
+
+<p>我们将这个式子化简便可以得到这样的关系。
+$(2 * S[r] - r) + 1 &lt;= (2 * S[l] - l)$</p>
+
+<p>对于一个 $r$ 而言，我们需要求出所有满足上述情况的 $l$ 中我们完成的区间数最多的那个然后转移过来。</p>
+
+<p>由于 $2 * S[i] - i$ 的范围在 $[-n,n]$ 间，所以我们设置 $f[x]$ 表示所有满足<code class="language-plaintext highlighter-rouge">2 * S[i] - i == x</code> 的 $i$ 中分割出最多的区间。因此我们每次需要求解一个 <code class="language-plaintext highlighter-rouge">r</code> 的时候，我们只需要查询在区间 <code class="language-plaintext highlighter-rouge">[ (2 * S[r] - r) + 1 , n]</code> 中<code class="language-plaintext highlighter-rouge">f[x]</code>的最大值，然后我们在将 <code class="language-plaintext highlighter-rouge">f[2 * S[r] -  r]</code> 设置为我们得到的值。</p>
+
+<p>鉴于此，我们需要一个支持单点修改，区间查询的数据结构，那么我们用<a href="https://codeforces.com/edu/course/2/lesson/4">线段树</a>完成此部分操作即可。</p>
+
+<p><a href="https://ac.nowcoder.com/acm/contest/view-submission?submissionId=50569415">code</a></p>
+</div><section class="article__sharing d-print-none"><!-- AddToAny BEGIN -->
+<div class="a2a_kit a2a_kit_size_32 a2a_default_style">
+   <a class="a2a_dd" href="https://www.addtoany.com/share"></a>
+   <a class="a2a_button_wechat"></a>
+   <a class="a2a_button_copy_link"></a>
+   <a class="a2a_button_twitter"></a>
+   <a class="a2a_button_email"></a>
+</div>
+<script async src="https://static.addtoany.com/menu/page.js"></script>
+<!-- AddToAny END -->
+</section><div class="d-print-none"><footer class="article__footer"><meta itemprop="dateModified" content="2022-01-25T00:00:00+00:00"><!-- start custom article footer snippet -->
+
+<!-- end custom article footer snippet -->
+<div class="article__subscribe"><div class="subscribe"><i class="fas fa-rss"></i> <a type="application/rss+xml" href="/feed.xml">Subscribe</a></div>
+</div><div class="article__license"><div class="license">
+    <p>This work is licensed under <a itemprop="license" rel="license" href="https://github.com/Real-king-Ph/Real-king-Ph.GitHub.io/blob/master/LICENSE">The MIT License</a> license.
+    </p>
+  </div></div></footer>
+<div class="article__section-navigator clearfix"><div class="previous"><span>PREVIOUS</span><a href="/algorithm/2022/01/25/ACM-is-all-you-need.html">Acm Is All You Need</a></div><div class="next"><span>NEXT</span><a href="/algorithm/2022/01/25/%E4%B9%9D%E5%B0%8F%E6%97%B6%E4%B9%9D%E4%B8%AA%E4%BA%BA%E4%B9%9D%E6%89%87%E9%97%A8.html">九小时九个人九扇门</a></div></div></div>
+
+</div>
+
+<script src="/assets/scripts/article.js">
+</script>
+
+
+<div class="post-categories">
+  
+  
+  <a class="button button--outline-secondary button--pill"
+    href="/categories/algorithm">algorithm</a>
+  
+  
+</div><div id="totop"
+   style="position: fixed; bottom: 90px; right: 40px; opacity: 0;background: url(/assets/images/topbutton.png) no-repeat center center;">
+   <a id="totop_a" title="Back To Top" style="width:64px; height:64px;display: block;"></a>
+</div>
+</div><section class="page__comments d-print-none"></section></article><!-- start custom main bottom snippet -->
+
+<!-- end custom main bottom snippet -->
+</div>
+            </div></div></div><div class="page__footer d-print-none">
+<footer class="footer py-4 js-page-footer">
+  <div class="main"><div itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="phrk"><meta itemprop="url" content="https://blog.ohtoai.fun/about/"><!-- Success is not final, failure is not fatal: it is the courage to continue that counts. -->
+        <meta itemprop="description" content="Success is not final, failure is not fatal: it is the courage to continue that counts."><div class="footer__author-links"><div class="author-links">
+  <ul class="menu menu--nowrap menu--inline"><link itemprop="url" href="https://blog.ohtoai.fun/about/"><li title="Send me an Email.">
+      <a class="button button--circle mail-button" itemprop="email" href="mailto:phrknfish@outlook.com" target="_blank">
+        <i class="fas fa-envelope"></i>
+      </a><li title="Follow me on Github.">
+        <a class="button button--circle github-button" itemprop="sameAs" href="https://github.com/Real-king-Ph" target="_blank">
+          <div class="icon"><svg fill="#000000" width="24px" height="24px" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
+  <path class="svgpath" data-index="path_0" fill="#272636" d="M0 525.2c0 223.6 143.3 413.7 343 483.5 26.9 6.8 22.8-12.4 22.8-25.4l0-88.7c-155.3 18.2-161.5-84.6-172-101.7-21.1-36-70.8-45.2-56-62.3 35.4-18.2 71.4 4.6 113.1 66.3 30.2 44.7 89.1 37.2 119 29.7 6.5-26.9 20.5-50.9 39.7-69.6C248.8 728.2 181.7 630 181.7 513.2c0-56.6 18.7-108.7 55.3-150.7-23.3-69.3 2.2-128.5 5.6-137.3 66.5-6 135.5 47.6 140.9 51.8 37.8-10.2 80.9-15.6 129.1-15.6 48.5 0 91.8 5.6 129.8 15.9 12.9-9.8 77-55.8 138.8-50.2 3.3 8.8 28.2 66.7 6.3 135 37.1 42.1 56 94.6 56 151.4 0 117-67.5 215.3-228.8 243.7 26.9 26.6 43.6 63.4 43.6 104.2l0 128.8c0.9 10.3 0 20.5 17.2 20.5C878.1 942.4 1024 750.9 1024 525.3c0-282.9-229.3-512-512-512C229.1 13.2 0 242.3 0 525.2L0 525.2z" />
+</svg>
+</div>
+        </a>
+      </li></ul>
+</div>
+</div>
+    </div><div class="site-info mt-2">
+      <div>© RK's blog 2022-2023,
+        Powered by <a title="Jekyll is a simple, blog-aware, static site generator." href="http://jekyllrb.com/">Jekyll</a> & <a
+        title="TeXt is a super customizable Jekyll theme." href="https://github.com/kitian616/jekyll-TeXt-theme">TeXt Theme</a>.
+      </div>
+      <p id="hitokoto">:D loading...</p>
+      <script src="https://v1.hitokoto.cn/?encode=js&select=%23hitokoto" defer></script>
+    </div>
+  </div>
+</footer>
+</div></div>
+    </div><script src="/assets/scripts/lib/modal.js"></script><div class="modal modal--overflow page__search-modal d-print-none js-page-search-modal"></div></div>
+
+
+<script src="/assets/scripts/lib/scroll-to.js"></script>
+<script src="/assets/scripts/lib/affix.js"></script>
+<script src="/assets/scripts/lib/toc.js"></script><script src="/assets/scripts/page.js"></script><!-- toc must before affix, since affix need to konw toc' height. --><script src="/assets/scripts/aside/toc.js"></script><script src="/assets/scripts/aside/affix.js"></script><script>
+   MathJax = {
+      tex: {
+         inlineMath: [['$', '$'], ['\\(', '\\)']]
+      },
+   };
+</script>
+<script type="text/javascript"  id="MathJax-script" src="https://cdn.bootcdn.net/ajax/libs/mathjax/3.2.0/es5/tex-chtml.js" async></script>
+
+    </div>
+    <script src="/assets/scripts/common.js"></script>
+  </body>
+</html>
+

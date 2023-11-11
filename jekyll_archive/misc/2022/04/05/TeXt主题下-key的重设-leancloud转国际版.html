@@ -1,0 +1,302 @@
+<!DOCTYPE html><html lang="en">
+  <head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"><title>teXt主题下-key的重设&leancloud转国际版 - RK's blog</title>
+
+<meta name="description" content="Key 的重设由来由于长时间没有进行更新博客，并且打算迁移一下近期题解，所以我更改以前的博客，于是乎现在的样子就是最终的结果。在配置的时候我曾遇到过几个不太好用的地方，其中最突出的就是它所使用的评论系统与访问量的设置。按照作者的设置，我们成功设置了这些东西。不过作者放在文档中的方法似乎有些不太好用。而 key 的...">
+<link rel="canonical" href="https://blog.ohtoai.fun/misc/2022/04/05/TeXt%E4%B8%BB%E9%A2%98%E4%B8%8B-key%E7%9A%84%E9%87%8D%E8%AE%BE-leancloud%E8%BD%AC%E5%9B%BD%E9%99%85%E7%89%88.html"><link rel="alternate" type="application/rss+xml" title="RK's blog" href="/feed.xml"><!-- start favicons snippet, use https://realfavicongenerator.net/ --><link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png"><link rel="manifest" href="/assets/site.webmanifest"><link rel="mask-icon" href="/assets/safari-pinned-tab.svg" color="#fc4d50"><link rel="shortcut icon" href="/assets/favicon.ico">
+
+<meta name="msapplication-TileColor" content="#ffc40d"><meta name="msapplication-config" content="/assets/browserconfig.xml">
+
+<meta name="theme-color" content="#ffffff">
+<!-- end favicons snippet --><link rel="stylesheet" href="/assets/css/main.css"><link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.2/css/all.min.css" ><!-- start custom head snippets -->
+<link href='//cdn.jsdelivr.net/npm/@waline/client/dist/waline.css' rel='stylesheet' />
+<!-- end custom head snippets -->
+<script src="/assets/scripts/utils/utils.js"></script>
+    <script src = "/assets/scripts/lib/throttle.js"></script>
+    <script src = "/assets/scripts/lib/lazyload.js"></script>
+
+    <!-- ms clarity --><script>
+  (function() {
+    var TEXT_VARIABLES = {
+      version: '2.2.6',
+      sources: {
+        font_awesome: 'https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.2/css/all.min.css',
+        jquery: 'https://cdn.bootcdn.net/ajax/libs/jquery/3.1.1/jquery.min.js',
+        leancloud_js_sdk: '//cdn.jsdelivr.net/npm/leancloud-storage@3.13.2/dist/av-min.js',
+        chart: 'https://cdn.bootcdn.net/ajax/libs/Chart.js/4.4.0/chart.umd.min.js',
+        gitalk: {
+          js: 'https://cdn.bootcdn.net/ajax/libs/gitalk/1.2.2/gitalk.min.js',
+          css: 'https://cdn.bootcdn.net/ajax/libs/gitalk/1.2.2/gitalk.min.css'
+        },
+        valine: 'https://unpkg.com/valine/dist/Valine.min.js',
+        waline: 'https://cdn.jsdelivr.net/npm/@waline/client/dist/waline.js',
+        mathjax: 'https://cdn.bootcdn.net/ajax/libs/mathjax/3.2.0/es5/tex-chtml.js',
+        mermaid: 'https://cdn.bootcdn.net/ajax/libs/mermaid/10.4.0/mermaid.min.js'
+      },
+      site: {
+        toc: {
+          selectors: 'h2,h3,h4'
+        }
+      },
+      paths: {
+        search_js: '/assets/search.js'
+      }
+    };
+    window.TEXT_VARIABLES = TEXT_VARIABLES;
+  })();
+</script>
+</head>
+  <body>
+    <div class="root" data-is-touch="false">
+      <div class="layout--page js-page-root"><div class="page__main js-page-main page__viewport has-aside cell cell--auto">
+
+      <div class="page__main-inner"><div class="page__header d-print-none"><header class="header"><div class="main">
+      <div class="header__title">
+        <div class="header__brand"><svg width="64px" height="64px" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><title>love-france-heart-ico</title><g id="love-france-heart-ico"><circle cx="34" cy="35" r="23" style="fill:#e5efef"/><path d="M22.973,8.665a6.775,6.775,0,0,0-4.764,2.005,6.777,6.777,0,0,0-4.765-2.005c-3.947,0-7.147,3.5-7.147,7.826s8.338,11.738,11.912,14.347C21.782,28.229,30.12,20.813,30.12,16.491S26.92,8.665,22.973,8.665Z" style="fill:#f53e28;stroke:#4c241d;stroke-linecap:round;stroke-linejoin:round;stroke-width:2px"/><path d="M49.973,35.665a6.775,6.775,0,0,0-4.764,2.005,6.777,6.777,0,0,0-4.765-2.005c-3.947,0-7.147,3.5-7.147,7.826s8.338,11.738,11.912,14.347C48.782,55.229,57.12,47.813,57.12,43.491S53.92,35.665,49.973,35.665Z" style="fill:#fff;stroke:#4c241d;stroke-linecap:round;stroke-linejoin:round;stroke-width:2px"/><line x1="26" y1="35" x2="26" y2="37" style="fill:none;stroke:#4c241d;stroke-linecap:round;stroke-linejoin:round;stroke-width:2px"/><line x1="26" y1="41" x2="26" y2="43" style="fill:none;stroke:#4c241d;stroke-linecap:round;stroke-linejoin:round;stroke-width:2px"/><line x1="22" y1="39" x2="24" y2="39" style="fill:none;stroke:#4c241d;stroke-linecap:round;stroke-linejoin:round;stroke-width:2px"/><line x1="28" y1="39" x2="30" y2="39" style="fill:none;stroke:#4c241d;stroke-linecap:round;stroke-linejoin:round;stroke-width:2px"/><circle cx="37.5" cy="7.5" r="2.5" style="fill:none;stroke:#4c241d;stroke-linecap:round;stroke-linejoin:round;stroke-width:2px"/><circle cx="4.5" cy="59.5" r="2.5" style="fill:none;stroke:#4c241d;stroke-linecap:round;stroke-linejoin:round;stroke-width:2px"/><path d="M32.651,29.1a1.069,1.069,0,1,1-1.069-1.069A1.069,1.069,0,0,1,32.651,29.1Z" style="fill:#4c241d"/><path d="M59.651,27.1a1.069,1.069,0,1,1-1.069-1.069A1.069,1.069,0,0,1,59.651,27.1Z" style="fill:#4c241d"/><path d="M6.651,4.1A1.069,1.069,0,1,1,5.582,3.029,1.069,1.069,0,0,1,6.651,4.1Z" style="fill:#4c241d"/><path d="M58.651,58.1a1.069,1.069,0,1,1-1.069-1.069A1.069,1.069,0,0,1,58.651,58.1Z" style="fill:#4c241d"/><path d="M5.651,32.1a1.069,1.069,0,1,1-1.069-1.069A1.069,1.069,0,0,1,5.651,32.1Z" style="fill:#4c241d"/><path d="M46.04,18.49a2.605,2.605,0,0,0-1.831.77,2.609,2.609,0,0,0-1.832-.77A2.887,2.887,0,0,0,39.63,21.5c0,1.661,3.2,4.512,4.579,5.515,1.373-1,4.578-3.854,4.578-5.515A2.887,2.887,0,0,0,46.04,18.49Z" style="fill:#9dc1e4;stroke:#4c241d;stroke-linecap:round;stroke-linejoin:round;stroke-width:2px"/><path d="M57.04,4.49a2.605,2.605,0,0,0-1.831.77,2.609,2.609,0,0,0-1.832-.77A2.887,2.887,0,0,0,50.63,7.5c0,1.661,3.2,4.512,4.579,5.515,1.373-1,4.578-3.854,4.578-5.515A2.887,2.887,0,0,0,57.04,4.49Z" style="fill:#fff;stroke:#4c241d;stroke-linecap:round;stroke-linejoin:round;stroke-width:2px"/><path d="M14.04,39.49a2.605,2.605,0,0,0-1.831.77,2.609,2.609,0,0,0-1.832-.77A2.887,2.887,0,0,0,7.63,42.5c0,1.661,3.205,4.512,4.579,5.515,1.373-1,4.578-3.854,4.578-5.515A2.887,2.887,0,0,0,14.04,39.49Z" style="fill:#9dc1e4;stroke:#4c241d;stroke-linecap:round;stroke-linejoin:round;stroke-width:2px"/><path d="M27.04,51.49a2.605,2.605,0,0,0-1.831.77,2.609,2.609,0,0,0-1.832-.77A2.887,2.887,0,0,0,20.63,54.5c0,1.661,3.205,4.512,4.579,5.515,1.373-1,4.578-3.854,4.578-5.515A2.887,2.887,0,0,0,27.04,51.49Z" style="fill:#f53e28;stroke:#4c241d;stroke-linecap:round;stroke-linejoin:round;stroke-width:2px"/></g></svg><a title="不知名211大三在读
+" href="/">RK's blog</a></div>
+      </div><nav class="navigation">
+        <ul><li class="navigation__item"><a href="/archive/">Archive</a></li><li class="navigation__item"><a href="/about/">About</a></li><li class="navigation__item"><a href="/Friend-Link-House/">Links</a></li><li class="navigation__item"><a href="https://blogroll.rklittle.workers.dev/">blogroll</a></li></ul>
+      </nav></div>
+  </header>
+</div><div class="page__content"><div class ="main"><div class="grid grid--reverse">
+
+              <div class="col-aside d-print-none js-col-aside"><aside class="page__aside js-page-aside"><div class="toc-aside js-toc-root"></div>
+</aside></div>
+
+              <div class="col-main cell cell--auto"><!-- start custom main top snippet -->
+
+<!-- end custom main top snippet -->
+<article itemscope itemtype="http://schema.org/Article"><div class="article__header"><header><h1>teXt主题下-key的重设&leancloud转国际版</h1></header><span class="split-space">&nbsp;</span>
+          <a class="edit-on-github"
+            title="Edit on Github"
+            href="https://github.com/Real-king-Ph/Real-king-Ph.GitHub.io/tree/master/_posts/2022-04-06M/2022-04-05-TeXt主题下-key的重设-leancloud转国际版.md">
+            <i class="far fa-edit"></i></a></div><meta itemprop="headline" content="teXt主题下-key的重设&leancloud转国际版"><div class="article__info clearfix"><ul class="left-col menu"><li>
+              <a class="button button--secondary button--pill button--sm"
+                href="/archive/?tag=blog">blog</a>
+            </li></ul><ul class="right-col menu"><li><i class="far fa-calendar-alt"></i> <span>Apr 05, 2022</span>
+            </li><li><i class="fa-solid fa-eye"></i> <span class="waline-pageview-count" data-path="/misc/2022/04/05/TeXt%E4%B8%BB%E9%A2%98%E4%B8%8B-key%E7%9A%84%E9%87%8D%E8%AE%BE-leancloud%E8%BD%AC%E5%9B%BD%E9%99%85%E7%89%88.html">0</span> views</li></ul></div><meta itemprop="author" content="phrk"/><meta itemprop="datePublished" content="2022-04-05T00:00:00+00:00">
+    <meta itemprop="keywords" content="blog"><div class="js-article-content"><div class="layout--article"><!-- start custom article top snippet -->
+
+<!-- end custom article top snippet -->
+<div class="article__content" itemprop="articleBody"><h2 id="key-的重设">Key 的重设</h2>
+
+<h3 id="由来">由来</h3>
+
+<p>由于长时间没有进行更新博客，并且打算迁移一下近期题解，所以我更改以前的博客，于是乎现在的样子就是最终的结果。</p>
+
+<p>在配置的时候我曾遇到过几个不太好用的地方，其中最突出的就是它所使用的评论系统与访问量的设置。</p>
+
+<p>按照作者的设置，我们成功设置了这些东西。</p>
+
+<p>不过作者放在文档中的方法似乎有些不太好用。</p>
+
+<p><img src="https://s2.loli.net/2022/04/05/zl1xQ4U7Z8TRI6v.png" alt="image-20220405180351407" /></p>
+
+<p>而 <code class="language-plaintext highlighter-rouge">key</code> 的值如下</p>
+
+<p><img src="https://s2.loli.net/2022/04/05/wkgWZGA6FT5qiBv.png" alt="image-20220405180619954" /></p>
+
+<p>如果每篇文章都需要我们手动设置的话那么对我们来说，特别是批量导入的人来说，这是极为不方便的。</p>
+
+<h3 id="修改">修改</h3>
+
+<p>我们不妨根据 <code class="language-plaintext highlighter-rouge">jekyll</code> 网站的生成规则自己定义一个可能不随着博客的改变的 <code class="language-plaintext highlighter-rouge">key</code></p>
+
+<p>首先唯一确定的东西有哪些呢？</p>
+
+<p>我们考虑网址，对于我们的博客来说，它是唯一的，如果我们有两个重复的地址，那么我们将无法定义该页面显示的东西是什么。</p>
+
+<p>那么因此，我们不妨用网站的 <code class="language-plaintext highlighter-rouge">url</code> 去代替对应的 <code class="language-plaintext highlighter-rouge">key</code> 。</p>
+
+<p>于是我们开始着手寻找，对于原来的仓库，我们可以定位到如下几个用到页面上的 <code class="language-plaintext highlighter-rouge">key</code> 的地方。</p>
+
+<ol>
+  <li><a href="https://github.com/kitian616/jekyll-TeXt-theme/blob/master/_includes/pageview-providers/leancloud/post.html#L8">jekyll-TeXt-theme/post.html</a></li>
+  <li><a href="https://github.com/kitian616/jekyll-TeXt-theme/blob/master/_includes/pageview-providers/leancloud/post.html#L23">jekyll-TeXt-theme/post.html</a></li>
+  <li><a href="https://github.com/kitian616/jekyll-TeXt-theme/blob/master/_includes/pageview-providers/leancloud/post.html#L26">jekyll-TeXt-theme/post.html</a></li>
+  <li><a href="https://github.com/kitian616/jekyll-TeXt-theme/blob/master/_includes/article-info.html#L74">jekyll-TeXt-theme/article-info.html</a></li>
+</ol>
+
+<p>我们将上面出现的 <code class="language-plaintext highlighter-rouge">page.key</code> 全部更换为 <code class="language-plaintext highlighter-rouge">page.url</code> 为了符合规则我做了一点点的别的改变.</p>
+
+<p>将上面两个网址中，自己仓库中相应位置的文件修改过来即可。</p>
+
+<p><a href="https://github.com/Real-king-Ph/Real-king-Ph.GitHub.io/blob/master/_includes/pageview-providers/leancloud/post.html">Real-king-Ph.GitHub.io/post.html</a> 这个文件覆盖即可，如果修改过可以用<a href="https://kmcha.com/text-compare">文本对比</a>查看。</p>
+
+<p>另外一个由于我已经转移至 <a href="https://waline.js.org/">waline</a>，因此提供下面的解决办法。</p>
+
+<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>_includes/article-info.html :
+	L74 { { include.article.key } } --&gt; {{ include.article.url | replace:'/' ,'s'}}
+</code></pre></div></div>
+
+<p>如果不了解产生了什么变化，可以参考<a href="https://liquid.bootcss.com/filters/replace/">LIQUID文档</a></p>
+
+<p>然后我们再次刷新，我们的访问量就有变化了。</p>
+
+<p>值得注意的是，作者自己写了一个<code class="language-plaintext highlighter-rouge">LazyLoad</code>。因此，访问量需要加载一下才行。</p>
+
+<h2 id="leancloud转至国际版">leancloud转至国际版</h2>
+
+<h3 id="由来-1">由来</h3>
+
+<p><a href="https://forum.leancloud.cn/t/topic/25129">未办理备案接入的域名将于 4 月限制访问 - 新闻公告 - LeanCloud 用户社区</a></p>
+
+<p>由于我并没有任何的 ip ，并且短期内不打算去设置独立ip并备案。</p>
+
+<p>因此我不得不将 leancloud 转移至国际版。</p>
+
+<p>为此我查阅了一些博客，发现大多数的解决方案都是在 <code class="language-plaintext highlighter-rouge">hexo</code> 的博客框架上的，而且很大一部分还都是特定的主题 <code class="language-plaintext highlighter-rouge">NexT</code> 。所以打算记录一下该如何改变。</p>
+
+<h3 id="操作">操作</h3>
+
+<p>首先第一步，在leancloud的左上角，我们将华北/东的改为国际版</p>
+
+<p><img src="https://s2.loli.net/2022/04/05/XrYPo2UcSnCTiEm.png" alt="leancloud_left_up" /></p>
+
+<p>然后我们重新注册一个账户(不同地区账号不互通)，重新按照文档的步骤进行设置。</p>
+
+<p>首先根据github中的 <a href="https://github.com/xCss/Valine/issues/340">issue</a> 我们发现我们需要进行下述的设置</p>
+
+<figure class="highlight"><pre><code class="language-yml" data-lang="yml"><table class="rouge-table"><tbody><tr><td class="gutter gl"><pre class="lineno">1
+</pre></td><td class="code"><pre><span class="na">serverURLs</span><span class="pi">:</span> <span class="s">https://xxxxxxxx.api.lncldglobal.com</span> <span class="c1"># 把xxxxxxxx替换成你自己AppID的前8位字符</span>
+</pre></td></tr></tbody></table></code></pre></figure>
+
+<p>我们进入leancloud中然后进入下述的页面</p>
+
+<p><img src="https://s2.loli.net/2022/04/05/WmN4pBMeLHCykhV.png" alt="image-20220405183326155" /></p>
+
+<p>然后我们在<strong>服务器地址</strong>中就可以找到这个设置了</p>
+
+<p>然后我们在 <code class="language-plaintext highlighter-rouge">valine</code> 的<a href="https://valine.js.org/configuration.html">官方手册</a>中我们发现配置的基本方法。</p>
+
+<p>首先我们有</p>
+
+<figure class="highlight"><pre><code class="language-html" data-lang="html"><span class="c">&lt;!-- 方法 1 --&gt;</span>
+<span class="nt">&lt;script&gt;</span>
+    <span class="k">new</span> <span class="nx">Valine</span><span class="p">({</span>
+        <span class="na">el</span><span class="p">:</span><span class="dl">'</span><span class="s1">#vcomment</span><span class="dl">'</span><span class="p">,</span>
+        <span class="na">appId</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Your appId</span><span class="dl">'</span><span class="p">,</span>
+        <span class="na">appKey</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Your appKey</span><span class="dl">'</span>
+    <span class="p">})</span>
+<span class="nt">&lt;/script&gt;</span>
+
+<span class="c">&lt;!-- 方法 2 --&gt;</span>
+<span class="nt">&lt;script&gt;</span>
+    <span class="kd">var</span> <span class="nx">valine</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Valine</span><span class="p">();</span>
+    <span class="nx">valine</span><span class="p">.</span><span class="nx">init</span><span class="p">({</span>
+        <span class="na">el</span><span class="p">:</span><span class="dl">'</span><span class="s1">#vcomment</span><span class="dl">'</span><span class="p">,</span>
+        <span class="na">appId</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Your appId</span><span class="dl">'</span><span class="p">,</span>
+        <span class="na">appKey</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Your appKey</span><span class="dl">'</span>
+    <span class="p">})</span>
+<span class="nt">&lt;/script&gt;</span></code></pre></figure>
+
+<p>我们开始着手去寻找，我们的主题在哪个地方使用了类似的东西。</p>
+
+<p><a href="https://github.com/kitian616/jekyll-TeXt-theme/blob/master/_includes/comments-providers/valine.html#L42">jekyll-TeXt-theme/valine.html</a></p>
+
+<p>我们发现信息恰好就在 <code class="language-plaintext highlighter-rouge">_config</code> 中，然后我们将我们上面得到的东西添加进去。</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">_config</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="na">el</span><span class="p">:</span> <span class="dl">'</span><span class="s1">#vcomments</span><span class="dl">'</span> <span class="p">,</span> 
+    <span class="p">...</span>
+    <span class="na">serverURLs</span><span class="p">:</span> <span class="dl">'</span><span class="s1">https://xxxxxxxx.api.lncldglobal.com</span><span class="dl">'</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>然后我们再次刷新就可以用国际版进行 <code class="language-plaintext highlighter-rouge">comment</code> 了</p>
+
+<p>其中参数用法<a href="https://valine.js.org/configuration.html#serverURLs">参阅</a></p>
+
+<p>对于如何改变viewer 我们也用同样的方法。</p>
+
+<p>这个viewer可能是主题作者写的，我们在文件文件中搜索我们的参数 <code class="language-plaintext highlighter-rouge">serverURLs</code></p>
+
+<p><a href="https://github.com/kitian616/jekyll-TeXt-theme/blob/master/_includes/pageview-providers/leancloud/leancloud.js#L16">jekyll-TeXt-theme/leancloud.js</a></p>
+
+<p>在这个地方我们也改为我们需要的地址即可。</p>
+
+<p>至此我们的修改就已经完成了。</p>
+
+<p>有什么问题可以反映在评论区哦😘。</p>
+
+</div><section class="article__sharing d-print-none"><!-- AddToAny BEGIN -->
+<div class="a2a_kit a2a_kit_size_32 a2a_default_style">
+   <a class="a2a_dd" href="https://www.addtoany.com/share"></a>
+   <a class="a2a_button_wechat"></a>
+   <a class="a2a_button_copy_link"></a>
+   <a class="a2a_button_twitter"></a>
+   <a class="a2a_button_email"></a>
+</div>
+<script async src="https://static.addtoany.com/menu/page.js"></script>
+<!-- AddToAny END -->
+</section><div class="d-print-none"><footer class="article__footer"><meta itemprop="dateModified" content="2022-04-05T00:00:00+00:00"><!-- start custom article footer snippet -->
+
+<!-- end custom article footer snippet -->
+<div class="article__subscribe"><div class="subscribe"><i class="fas fa-rss"></i> <a type="application/rss+xml" href="/feed.xml">Subscribe</a></div>
+</div><div class="article__license"><div class="license">
+    <p>This work is licensed under <a itemprop="license" rel="license" href="https://github.com/Real-king-Ph/Real-king-Ph.GitHub.io/blob/master/LICENSE">The MIT License</a> license.
+    </p>
+  </div></div></footer>
+<div class="article__section-navigator clearfix"><div class="previous"><span>PREVIOUS</span><a href="/algorithm/2022/04/01/Promising-String.html">Promising String</a></div><div class="next"><span>NEXT</span><a href="/algorithm/2022/04/06/Two-Binary-Strings-Problem.html">Two binary strings problem</a></div></div></div>
+
+</div>
+
+<script src="/assets/scripts/article.js">
+</script>
+
+
+<div class="post-categories">
+  
+  
+  <a class="button button--outline-secondary button--pill"
+    href="/categories/misc">misc</a>
+  
+  
+</div><div id="totop"
+   style="position: fixed; bottom: 90px; right: 40px; opacity: 0;background: url(/assets/images/topbutton.png) no-repeat center center;">
+   <a id="totop_a" title="Back To Top" style="width:64px; height:64px;display: block;"></a>
+</div>
+</div><section class="page__comments d-print-none"></section></article><!-- start custom main bottom snippet -->
+
+<!-- end custom main bottom snippet -->
+</div>
+            </div></div></div><div class="page__footer d-print-none">
+<footer class="footer py-4 js-page-footer">
+  <div class="main"><div itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="phrk"><meta itemprop="url" content="https://blog.ohtoai.fun/about/"><!-- Success is not final, failure is not fatal: it is the courage to continue that counts. -->
+        <meta itemprop="description" content="Success is not final, failure is not fatal: it is the courage to continue that counts."><div class="footer__author-links"><div class="author-links">
+  <ul class="menu menu--nowrap menu--inline"><link itemprop="url" href="https://blog.ohtoai.fun/about/"><li title="Send me an Email.">
+      <a class="button button--circle mail-button" itemprop="email" href="mailto:phrknfish@outlook.com" target="_blank">
+        <i class="fas fa-envelope"></i>
+      </a><li title="Follow me on Github.">
+        <a class="button button--circle github-button" itemprop="sameAs" href="https://github.com/Real-king-Ph" target="_blank">
+          <div class="icon"><svg fill="#000000" width="24px" height="24px" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
+  <path class="svgpath" data-index="path_0" fill="#272636" d="M0 525.2c0 223.6 143.3 413.7 343 483.5 26.9 6.8 22.8-12.4 22.8-25.4l0-88.7c-155.3 18.2-161.5-84.6-172-101.7-21.1-36-70.8-45.2-56-62.3 35.4-18.2 71.4 4.6 113.1 66.3 30.2 44.7 89.1 37.2 119 29.7 6.5-26.9 20.5-50.9 39.7-69.6C248.8 728.2 181.7 630 181.7 513.2c0-56.6 18.7-108.7 55.3-150.7-23.3-69.3 2.2-128.5 5.6-137.3 66.5-6 135.5 47.6 140.9 51.8 37.8-10.2 80.9-15.6 129.1-15.6 48.5 0 91.8 5.6 129.8 15.9 12.9-9.8 77-55.8 138.8-50.2 3.3 8.8 28.2 66.7 6.3 135 37.1 42.1 56 94.6 56 151.4 0 117-67.5 215.3-228.8 243.7 26.9 26.6 43.6 63.4 43.6 104.2l0 128.8c0.9 10.3 0 20.5 17.2 20.5C878.1 942.4 1024 750.9 1024 525.3c0-282.9-229.3-512-512-512C229.1 13.2 0 242.3 0 525.2L0 525.2z" />
+</svg>
+</div>
+        </a>
+      </li></ul>
+</div>
+</div>
+    </div><div class="site-info mt-2">
+      <div>© RK's blog 2022-2023,
+        Powered by <a title="Jekyll is a simple, blog-aware, static site generator." href="http://jekyllrb.com/">Jekyll</a> & <a
+        title="TeXt is a super customizable Jekyll theme." href="https://github.com/kitian616/jekyll-TeXt-theme">TeXt Theme</a>.
+      </div>
+      <p id="hitokoto">:D loading...</p>
+      <script src="https://v1.hitokoto.cn/?encode=js&select=%23hitokoto" defer></script>
+    </div>
+  </div>
+</footer>
+</div></div>
+    </div><script src="/assets/scripts/lib/modal.js"></script><div class="modal modal--overflow page__search-modal d-print-none js-page-search-modal"></div></div>
+
+
+<script src="/assets/scripts/lib/scroll-to.js"></script>
+<script src="/assets/scripts/lib/affix.js"></script>
+<script src="/assets/scripts/lib/toc.js"></script><script src="/assets/scripts/page.js"></script><!-- toc must before affix, since affix need to konw toc' height. --><script src="/assets/scripts/aside/toc.js"></script><script src="/assets/scripts/aside/affix.js"></script>
+    </div>
+    <script src="/assets/scripts/common.js"></script>
+  </body>
+</html>
+

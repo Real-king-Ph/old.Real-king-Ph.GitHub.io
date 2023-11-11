@@ -1,0 +1,333 @@
+<!DOCTYPE html><html lang="en">
+  <head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"><title>vscode + oracle 简易使用数据库 - RK's blog</title>
+
+<meta name="description" content="由来：  由于数据库是一门十分重要的课程，计算机的数据基本都是由此系统而保管，顺应学校的教学，采用oracle数据库。  在电脑上折腾了一下 oracle Database ， 发现电脑的内存被吞了不少，并且成为了我计算机的常驻服务占用了部分的 CPU 略微影响到日常使用。  恰好学校服务器提供了一个不错的数据库...">
+<link rel="canonical" href="https://blog.ohtoai.fun/2022/04/15/vscode-oracle%E7%AE%80%E6%98%93%E4%BD%BF%E7%94%A8%E6%95%B0%E6%8D%AE%E5%BA%93.html"><link rel="alternate" type="application/rss+xml" title="RK's blog" href="/feed.xml"><!-- start favicons snippet, use https://realfavicongenerator.net/ --><link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png"><link rel="manifest" href="/assets/site.webmanifest"><link rel="mask-icon" href="/assets/safari-pinned-tab.svg" color="#fc4d50"><link rel="shortcut icon" href="/assets/favicon.ico">
+
+<meta name="msapplication-TileColor" content="#ffc40d"><meta name="msapplication-config" content="/assets/browserconfig.xml">
+
+<meta name="theme-color" content="#ffffff">
+<!-- end favicons snippet --><link rel="stylesheet" href="/assets/css/main.css"><link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.2/css/all.min.css" ><!-- start custom head snippets -->
+<link href='//cdn.jsdelivr.net/npm/@waline/client/dist/waline.css' rel='stylesheet' />
+<!-- end custom head snippets -->
+<script src="/assets/scripts/utils/utils.js"></script>
+    <script src = "/assets/scripts/lib/throttle.js"></script>
+    <script src = "/assets/scripts/lib/lazyload.js"></script>
+
+    <!-- ms clarity --><script>
+  (function() {
+    var TEXT_VARIABLES = {
+      version: '2.2.6',
+      sources: {
+        font_awesome: 'https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.2/css/all.min.css',
+        jquery: 'https://cdn.bootcdn.net/ajax/libs/jquery/3.1.1/jquery.min.js',
+        leancloud_js_sdk: '//cdn.jsdelivr.net/npm/leancloud-storage@3.13.2/dist/av-min.js',
+        chart: 'https://cdn.bootcdn.net/ajax/libs/Chart.js/4.4.0/chart.umd.min.js',
+        gitalk: {
+          js: 'https://cdn.bootcdn.net/ajax/libs/gitalk/1.2.2/gitalk.min.js',
+          css: 'https://cdn.bootcdn.net/ajax/libs/gitalk/1.2.2/gitalk.min.css'
+        },
+        valine: 'https://unpkg.com/valine/dist/Valine.min.js',
+        waline: 'https://cdn.jsdelivr.net/npm/@waline/client/dist/waline.js',
+        mathjax: 'https://cdn.bootcdn.net/ajax/libs/mathjax/3.2.0/es5/tex-chtml.js',
+        mermaid: 'https://cdn.bootcdn.net/ajax/libs/mermaid/10.4.0/mermaid.min.js'
+      },
+      site: {
+        toc: {
+          selectors: 'h2,h3,h4'
+        }
+      },
+      paths: {
+        search_js: '/assets/search.js'
+      }
+    };
+    window.TEXT_VARIABLES = TEXT_VARIABLES;
+  })();
+</script>
+</head>
+  <body>
+    <div class="root" data-is-touch="false">
+      <div class="layout--page js-page-root"><div class="page__main js-page-main page__viewport has-aside cell cell--auto">
+
+      <div class="page__main-inner"><div class="page__header d-print-none"><header class="header"><div class="main">
+      <div class="header__title">
+        <div class="header__brand"><svg width="64px" height="64px" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><title>love-france-heart-ico</title><g id="love-france-heart-ico"><circle cx="34" cy="35" r="23" style="fill:#e5efef"/><path d="M22.973,8.665a6.775,6.775,0,0,0-4.764,2.005,6.777,6.777,0,0,0-4.765-2.005c-3.947,0-7.147,3.5-7.147,7.826s8.338,11.738,11.912,14.347C21.782,28.229,30.12,20.813,30.12,16.491S26.92,8.665,22.973,8.665Z" style="fill:#f53e28;stroke:#4c241d;stroke-linecap:round;stroke-linejoin:round;stroke-width:2px"/><path d="M49.973,35.665a6.775,6.775,0,0,0-4.764,2.005,6.777,6.777,0,0,0-4.765-2.005c-3.947,0-7.147,3.5-7.147,7.826s8.338,11.738,11.912,14.347C48.782,55.229,57.12,47.813,57.12,43.491S53.92,35.665,49.973,35.665Z" style="fill:#fff;stroke:#4c241d;stroke-linecap:round;stroke-linejoin:round;stroke-width:2px"/><line x1="26" y1="35" x2="26" y2="37" style="fill:none;stroke:#4c241d;stroke-linecap:round;stroke-linejoin:round;stroke-width:2px"/><line x1="26" y1="41" x2="26" y2="43" style="fill:none;stroke:#4c241d;stroke-linecap:round;stroke-linejoin:round;stroke-width:2px"/><line x1="22" y1="39" x2="24" y2="39" style="fill:none;stroke:#4c241d;stroke-linecap:round;stroke-linejoin:round;stroke-width:2px"/><line x1="28" y1="39" x2="30" y2="39" style="fill:none;stroke:#4c241d;stroke-linecap:round;stroke-linejoin:round;stroke-width:2px"/><circle cx="37.5" cy="7.5" r="2.5" style="fill:none;stroke:#4c241d;stroke-linecap:round;stroke-linejoin:round;stroke-width:2px"/><circle cx="4.5" cy="59.5" r="2.5" style="fill:none;stroke:#4c241d;stroke-linecap:round;stroke-linejoin:round;stroke-width:2px"/><path d="M32.651,29.1a1.069,1.069,0,1,1-1.069-1.069A1.069,1.069,0,0,1,32.651,29.1Z" style="fill:#4c241d"/><path d="M59.651,27.1a1.069,1.069,0,1,1-1.069-1.069A1.069,1.069,0,0,1,59.651,27.1Z" style="fill:#4c241d"/><path d="M6.651,4.1A1.069,1.069,0,1,1,5.582,3.029,1.069,1.069,0,0,1,6.651,4.1Z" style="fill:#4c241d"/><path d="M58.651,58.1a1.069,1.069,0,1,1-1.069-1.069A1.069,1.069,0,0,1,58.651,58.1Z" style="fill:#4c241d"/><path d="M5.651,32.1a1.069,1.069,0,1,1-1.069-1.069A1.069,1.069,0,0,1,5.651,32.1Z" style="fill:#4c241d"/><path d="M46.04,18.49a2.605,2.605,0,0,0-1.831.77,2.609,2.609,0,0,0-1.832-.77A2.887,2.887,0,0,0,39.63,21.5c0,1.661,3.2,4.512,4.579,5.515,1.373-1,4.578-3.854,4.578-5.515A2.887,2.887,0,0,0,46.04,18.49Z" style="fill:#9dc1e4;stroke:#4c241d;stroke-linecap:round;stroke-linejoin:round;stroke-width:2px"/><path d="M57.04,4.49a2.605,2.605,0,0,0-1.831.77,2.609,2.609,0,0,0-1.832-.77A2.887,2.887,0,0,0,50.63,7.5c0,1.661,3.2,4.512,4.579,5.515,1.373-1,4.578-3.854,4.578-5.515A2.887,2.887,0,0,0,57.04,4.49Z" style="fill:#fff;stroke:#4c241d;stroke-linecap:round;stroke-linejoin:round;stroke-width:2px"/><path d="M14.04,39.49a2.605,2.605,0,0,0-1.831.77,2.609,2.609,0,0,0-1.832-.77A2.887,2.887,0,0,0,7.63,42.5c0,1.661,3.205,4.512,4.579,5.515,1.373-1,4.578-3.854,4.578-5.515A2.887,2.887,0,0,0,14.04,39.49Z" style="fill:#9dc1e4;stroke:#4c241d;stroke-linecap:round;stroke-linejoin:round;stroke-width:2px"/><path d="M27.04,51.49a2.605,2.605,0,0,0-1.831.77,2.609,2.609,0,0,0-1.832-.77A2.887,2.887,0,0,0,20.63,54.5c0,1.661,3.205,4.512,4.579,5.515,1.373-1,4.578-3.854,4.578-5.515A2.887,2.887,0,0,0,27.04,51.49Z" style="fill:#f53e28;stroke:#4c241d;stroke-linecap:round;stroke-linejoin:round;stroke-width:2px"/></g></svg><a title="不知名211大三在读
+" href="/">RK's blog</a></div>
+      </div><nav class="navigation">
+        <ul><li class="navigation__item"><a href="/archive/">Archive</a></li><li class="navigation__item"><a href="/about/">About</a></li><li class="navigation__item"><a href="/Friend-Link-House/">Links</a></li><li class="navigation__item"><a href="https://blogroll.rklittle.workers.dev/">blogroll</a></li></ul>
+      </nav></div>
+  </header>
+</div><div class="page__content"><div class ="main"><div class="grid grid--reverse">
+
+              <div class="col-aside d-print-none js-col-aside"><aside class="page__aside js-page-aside"><div class="toc-aside js-toc-root"></div>
+</aside></div>
+
+              <div class="col-main cell cell--auto"><!-- start custom main top snippet -->
+
+<!-- end custom main top snippet -->
+<article itemscope itemtype="http://schema.org/Article"><div class="article__header"><header><h1>vscode + oracle 简易使用数据库</h1></header><span class="split-space">&nbsp;</span>
+          <a class="edit-on-github"
+            title="Edit on Github"
+            href="https://github.com/Real-king-Ph/Real-king-Ph.GitHub.io/tree/master/_posts/2022-04-06M/2022-04-15-vscode-oracle简易使用数据库.md">
+            <i class="far fa-edit"></i></a></div><meta itemprop="headline" content="vscode + oracle 简易使用数据库"><div class="article__info clearfix"><ul class="left-col menu"><li>
+              <a class="button button--secondary button--pill button--sm"
+                href="/archive/?tag=vscode">vscode</a>
+            </li><li>
+              <a class="button button--secondary button--pill button--sm"
+                href="/archive/?tag=SQL">SQL</a>
+            </li></ul><ul class="right-col menu"><li><i class="far fa-calendar-alt"></i> <span>Apr 15, 2022</span>
+            </li><li><i class="fa-solid fa-eye"></i> <span class="waline-pageview-count" data-path="/2022/04/15/vscode-oracle%E7%AE%80%E6%98%93%E4%BD%BF%E7%94%A8%E6%95%B0%E6%8D%AE%E5%BA%93.html">0</span> views</li></ul></div><meta itemprop="author" content="phrk"/><meta itemprop="datePublished" content="2022-04-15T00:00:00+00:00">
+    <meta itemprop="keywords" content="vscode,SQL"><div class="js-article-content"><div class="layout--article"><!-- start custom article top snippet -->
+
+<!-- end custom article top snippet -->
+<div class="article__content" itemprop="articleBody"><blockquote>
+  <p>由来：</p>
+
+  <p>由于数据库是一门十分重要的课程，计算机的数据基本都是由此系统而保管，顺应学校的教学，采用oracle数据库。</p>
+
+  <p>在电脑上折腾了一下 oracle Database ， 发现电脑的内存被吞了不少，并且成为了我计算机的常驻服务占用了部分的 CPU 略微影响到日常使用。</p>
+
+  <p>恰好学校服务器提供了一个不错的数据库系统，那么不妨利用这个作为我们学习使用的服务器</p>
+</blockquote>
+
+<h2 id="需要的物件">需要的物件</h2>
+
+<ul>
+  <li>电脑 <code class="language-plaintext error highlighter-rouge">?</code></li>
+  <li>vscode + 学校的内网</li>
+  <li><a href="https://www.oracle.com/cn/database/technologies/appdev/dotnet/odtvscodequickstart.html">官方文档</a></li>
+</ul>
+
+<h3 id="vs-code-安装相应的工具">Vs Code 安装相应的工具</h3>
+
+<p><img src="https://s2.loli.net/2022/04/15/35iRrvafjHUXq91.png" alt="image-20220415170416815" /></p>
+
+<p>在侧栏的拓展中搜索 oracle 并找到 Oracle Developer Tools for Vscode，点击安装即可，等待安装完成。</p>
+
+<h3 id="连接到数据库">连接到数据库</h3>
+
+<p>安装完之后我们的 VScode 就多出来了一个图标 <i class="fa-solid fa-database"></i> 之后我们点击右上角的 +</p>
+
+<p><img src="https://s2.loli.net/2022/04/15/Jt6qOsYieGDrRp7.png" alt="image-20220415172126832" /></p>
+
+<p>然后出现如下的界面</p>
+
+<p><img src="https://s2.loli.net/2022/04/15/yJfXG6YbEtpCUl5.png" alt="image-20220415172209067" /></p>
+
+<p>其中标注为 * 号的为必填符号。</p>
+
+<p>有下列的信息我们需要填写</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Value</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Database host name</td>
+      <td>123.123.123.123 (host 所在的 ip)</td>
+    </tr>
+    <tr>
+      <td>Service name</td>
+      <td>orcl (服务器的名字)</td>
+    </tr>
+    <tr>
+      <td>User name</td>
+      <td>你的用户名  (我校为S+学号)</td>
+    </tr>
+    <tr>
+      <td>Password</td>
+      <td>密码   (我校为world文件中的默认密码)</td>
+    </tr>
+    <tr>
+      <td>Connection name</td>
+      <td>你选择连接的名字</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>我的填写</p>
+
+<p><img src="https://s2.loli.net/2022/04/15/32G7rhnYPio18dy.png" alt="info" /></p>
+
+<p>然后进入之后，我们新建一个以 <code class="language-plaintext highlighter-rouge">.sql</code> 为结尾的文件，然后在其中写点语句用于测试。</p>
+
+<p>以我校文档中的信息作为测试源</p>
+
+<figure class="highlight"><pre><code class="language-sql" data-lang="sql"><span class="k">Create</span> <span class="k">table</span> <span class="n">Student</span>
+<span class="p">(</span><span class="n">Sno</span> <span class="n">number</span><span class="p">(</span><span class="mi">12</span><span class="p">)</span> <span class="k">constraint</span> <span class="n">PK_student</span> <span class="k">primary</span> <span class="k">key</span><span class="p">,</span>
+<span class="n">Sname</span> <span class="nb">char</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span> <span class="k">not</span> <span class="k">null</span> <span class="k">unique</span><span class="p">,</span>
+<span class="n">Ssex</span> <span class="nb">char</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span>
+<span class="n">Sdept</span> <span class="nb">char</span><span class="p">(</span><span class="mi">20</span><span class="p">),</span>
+<span class="k">Constraint</span> <span class="n">ck_ss</span> <span class="k">check</span> <span class="p">(</span><span class="n">Ssex</span> <span class="k">in</span> <span class="p">(</span><span class="s1">'男'</span><span class="p">,</span><span class="s1">'女'</span><span class="p">))</span>
+<span class="p">);</span>
+
+<span class="k">Create</span> <span class="k">table</span> <span class="n">Course</span>
+<span class="p">(</span><span class="n">Cno</span> <span class="n">number</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span> <span class="k">constraint</span> <span class="n">pk_course</span> <span class="k">primary</span> <span class="k">key</span><span class="p">,</span>
+<span class="n">Cname</span> <span class="nb">char</span><span class="p">(</span><span class="mi">20</span><span class="p">),</span>
+<span class="n">Cpno</span> <span class="n">number</span><span class="p">,</span>
+<span class="n">Ccredit</span> <span class="n">number</span><span class="p">);</span>
+
+<span class="k">Create</span> <span class="k">table</span> <span class="n">SC</span>
+<span class="p">(</span><span class="n">Sno</span> <span class="n">number</span><span class="p">(</span><span class="mi">12</span><span class="p">),</span>
+ <span class="n">Cno</span> <span class="n">number</span><span class="p">(</span><span class="mi">4</span><span class="p">),</span>
+ <span class="n">Grade</span> <span class="n">number</span><span class="p">,</span>
+ <span class="k">Constraint</span> <span class="n">pk_SC</span> <span class="k">Primary</span> <span class="k">key</span> <span class="p">(</span><span class="n">Sno</span><span class="p">,</span><span class="n">Cno</span><span class="p">),</span>
+ <span class="k">Constraint</span> <span class="n">fk_s</span> <span class="k">Foreign</span> <span class="k">key</span> <span class="p">(</span><span class="n">sno</span> <span class="p">)</span> <span class="k">references</span> <span class="n">student</span><span class="p">(</span><span class="n">Sno</span><span class="p">),</span>
+ <span class="k">Constraint</span> <span class="n">fk_c</span> <span class="k">Foreign</span> <span class="k">key</span> <span class="p">(</span><span class="n">cno</span> <span class="p">)</span> <span class="k">references</span> <span class="n">course</span><span class="p">(</span><span class="n">Cno</span><span class="p">)</span>
+<span class="p">);</span>
+
+ <span class="k">Alter</span> <span class="k">table</span> <span class="n">Student</span> <span class="k">add</span> <span class="n">Sage</span> <span class="n">number</span> <span class="k">not</span> <span class="k">null</span><span class="p">;</span>
+
+<span class="k">Insert</span> <span class="k">Into</span> <span class="n">Student</span><span class="p">(</span><span class="n">Sno</span><span class="p">,</span><span class="n">Sname</span><span class="p">,</span><span class="n">Ssex</span><span class="p">,</span><span class="n">Sage</span><span class="p">,</span><span class="n">Sdept</span><span class="p">)</span>
+<span class="k">Values</span><span class="p">(</span><span class="mi">200215121</span><span class="p">,</span><span class="s1">'李勇'</span><span class="p">,</span><span class="s1">'男'</span><span class="p">,</span><span class="mi">20</span><span class="p">,</span><span class="s1">'CS'</span><span class="p">);</span>
+<span class="k">Insert</span> <span class="k">Into</span> <span class="n">Student</span><span class="p">(</span><span class="n">Sno</span><span class="p">,</span><span class="n">Sname</span><span class="p">,</span><span class="n">Ssex</span><span class="p">,</span><span class="n">Sage</span><span class="p">,</span><span class="n">Sdept</span><span class="p">)</span>
+<span class="k">Values</span><span class="p">(</span><span class="mi">200215122</span><span class="p">,</span><span class="s1">'刘晨'</span><span class="p">,</span><span class="s1">'女'</span><span class="p">,</span><span class="mi">19</span><span class="p">,</span><span class="s1">'CS'</span><span class="p">);</span>
+<span class="k">Insert</span> <span class="k">Into</span> <span class="n">Student</span><span class="p">(</span><span class="n">Sno</span><span class="p">,</span><span class="n">Sname</span><span class="p">,</span><span class="n">Ssex</span><span class="p">,</span><span class="n">Sage</span><span class="p">,</span><span class="n">Sdept</span><span class="p">)</span>
+<span class="k">Values</span><span class="p">(</span><span class="mi">200215123</span><span class="p">,</span><span class="s1">'王敏'</span><span class="p">,</span><span class="s1">'女'</span><span class="p">,</span><span class="mi">18</span><span class="p">,</span><span class="s1">'MA'</span><span class="p">);</span>
+<span class="k">Insert</span> <span class="k">Into</span> <span class="n">Student</span><span class="p">(</span><span class="n">Sno</span><span class="p">,</span><span class="n">Sname</span><span class="p">,</span><span class="n">Ssex</span><span class="p">,</span><span class="n">Sage</span><span class="p">,</span><span class="n">Sdept</span><span class="p">)</span>
+<span class="k">Values</span><span class="p">(</span><span class="mi">200215125</span><span class="p">,</span><span class="s1">'张立进'</span><span class="p">,</span><span class="s1">'男'</span><span class="p">,</span><span class="mi">22</span><span class="p">,</span><span class="s1">'IS'</span><span class="p">);</span>
+
+<span class="k">Insert</span> <span class="k">Into</span> <span class="n">Course</span><span class="p">(</span><span class="n">Cno</span><span class="p">,</span><span class="n">Cname</span><span class="p">,</span> <span class="n">Cpno</span><span class="p">,</span> <span class="n">Ccredit</span><span class="p">)</span>
+<span class="k">Values</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="s1">'数据库'</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">4</span><span class="p">);</span>
+<span class="k">Insert</span> <span class="k">Into</span> <span class="n">Course</span><span class="p">(</span><span class="n">Cno</span><span class="p">,</span><span class="n">Cname</span><span class="p">,</span> <span class="n">Ccredit</span><span class="p">)</span>
+<span class="k">Values</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="s1">'数学'</span><span class="p">,</span><span class="mi">2</span><span class="p">);</span>
+<span class="k">Insert</span> <span class="k">Into</span> <span class="n">Course</span><span class="p">(</span><span class="n">Cno</span><span class="p">,</span><span class="n">Cname</span><span class="p">,</span><span class="n">Cpno</span><span class="p">,</span> <span class="n">Ccredit</span><span class="p">)</span>
+<span class="k">Values</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="s1">'信息系统'</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">4</span><span class="p">);</span>
+<span class="k">Insert</span> <span class="k">Into</span> <span class="n">Course</span><span class="p">(</span><span class="n">Cno</span><span class="p">,</span><span class="n">Cname</span><span class="p">,</span><span class="n">Cpno</span><span class="p">,</span> <span class="n">Ccredit</span><span class="p">)</span>
+<span class="k">Values</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="s1">'操作系统'</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">3</span><span class="p">);</span>
+<span class="k">Insert</span> <span class="k">Into</span> <span class="n">Course</span><span class="p">(</span><span class="n">Cno</span><span class="p">,</span><span class="n">Cname</span><span class="p">,</span><span class="n">Cpno</span><span class="p">,</span><span class="n">Ccredit</span><span class="p">)</span>
+<span class="k">Values</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="s1">'数据结构'</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">4</span><span class="p">);</span>
+<span class="k">Insert</span> <span class="k">Into</span> <span class="n">Course</span><span class="p">(</span><span class="n">Cno</span><span class="p">,</span><span class="n">Cname</span><span class="p">,</span><span class="n">Ccredit</span><span class="p">)</span>
+<span class="k">Values</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span><span class="s1">'数据处理'</span><span class="p">,</span><span class="mi">2</span><span class="p">);</span>
+<span class="k">Insert</span> <span class="k">Into</span> <span class="n">Course</span><span class="p">(</span><span class="n">Cno</span><span class="p">,</span><span class="n">Cname</span><span class="p">,</span><span class="n">Cpno</span><span class="p">,</span><span class="n">Ccredit</span><span class="p">)</span>
+<span class="k">Values</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span><span class="s1">'PASCAL语言'</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">4</span><span class="p">);</span>
+
+<span class="k">Insert</span> <span class="k">Into</span> <span class="n">SC</span><span class="p">(</span><span class="n">Sno</span><span class="p">,</span><span class="n">Cno</span><span class="p">,</span> <span class="n">Grade</span><span class="p">)</span>
+<span class="k">Values</span><span class="p">(</span><span class="mi">200215121</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">92</span><span class="p">);</span>
+<span class="k">Insert</span> <span class="k">Into</span> <span class="n">SC</span><span class="p">(</span><span class="n">Sno</span><span class="p">,</span><span class="n">Cno</span><span class="p">,</span> <span class="n">Grade</span><span class="p">)</span>
+<span class="k">Values</span><span class="p">(</span><span class="mi">200215121</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">85</span><span class="p">);</span>
+<span class="k">Insert</span> <span class="k">Into</span> <span class="n">SC</span><span class="p">(</span><span class="n">Sno</span><span class="p">,</span><span class="n">Cno</span><span class="p">,</span> <span class="n">Grade</span><span class="p">)</span>
+<span class="k">Values</span><span class="p">(</span><span class="mi">200215121</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">88</span><span class="p">);</span>
+<span class="k">Insert</span> <span class="k">Into</span> <span class="n">SC</span><span class="p">(</span><span class="n">Sno</span><span class="p">,</span><span class="n">Cno</span><span class="p">,</span> <span class="n">Grade</span><span class="p">)</span>
+<span class="k">Values</span><span class="p">(</span><span class="mi">200215122</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">90</span><span class="p">);</span>
+<span class="k">Insert</span> <span class="k">Into</span> <span class="n">SC</span><span class="p">(</span><span class="n">Sno</span><span class="p">,</span><span class="n">Cno</span><span class="p">,</span> <span class="n">Grade</span><span class="p">)</span>
+<span class="k">Values</span><span class="p">(</span><span class="mi">200215122</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">80</span><span class="p">);</span></code></pre></figure>
+
+<p>在写完这些信息之后我们按 <code class="language-plaintext highlighter-rouge">F1</code> 然后输入 <code class="language-plaintext highlighter-rouge">connect</code></p>
+
+<p><img src="https://s2.loli.net/2022/04/15/cLhJHaU7gBrTCwN.png" alt="vscode" /></p>
+
+<p>选择刚才填充的信息即可。</p>
+
+<h3 id="运行数据库">运行数据库</h3>
+
+<p>我们在 <code class="language-plaintext highlighter-rouge">.sql</code> 的目录下右键出现如下的菜单。</p>
+
+<p><img src="https://s2.loli.net/2022/04/15/LpDc8bFEZdHXz2q.png" alt="m" /></p>
+
+<p><code class="language-plaintext highlighter-rouge">Ctrl+E</code> 是执行选中的那句话 <code class="language-plaintext highlighter-rouge">Ctrl+R</code> 是执行文件的全部。</p>
+
+<p>这里我们选择全部执行，然后会弹出来全部代码的执行状况。</p>
+
+<p>然后这个执行完毕之后，我们在看看，我们的数据是否被存储进去。</p>
+
+<p>将文件中的代码全部清空加入下面的查询语句。</p>
+
+<figure class="highlight"><pre><code class="language-sql" data-lang="sql"><span class="k">SELECT</span> <span class="o">*</span> <span class="k">FROM</span> <span class="n">COURSE</span><span class="p">;</span>
+
+<span class="k">SELECT</span> <span class="o">*</span> <span class="k">FROM</span> <span class="n">SC</span><span class="p">;</span>
+
+<span class="k">SELECT</span> <span class="o">*</span> <span class="k">FROM</span> <span class="n">STUDENT</span><span class="p">;</span></code></pre></figure>
+
+<p>同样按下 <code class="language-plaintext highlighter-rouge">Ctrl + R</code> 全部执行。</p>
+
+<p>那么我们就得到下面的结构化存储数据了。</p>
+
+<p><img src="https://s2.loli.net/2022/04/15/jbI5HGBXYOtxnDu.png" alt="image-20220415175131257" /></p>
+
+<p>到这里我们就可以成功的用 vscode 连接到学校的数据库了。</p>
+
+<p>如果在本机安装 Oracle Database 的话 host 请填写 <code class="language-plaintext highlighter-rouge">localhost</code> 或者 <code class="language-plaintext highlighter-rouge">127.0.0.1</code> 别的不变。</p>
+</div><section class="article__sharing d-print-none"><!-- AddToAny BEGIN -->
+<div class="a2a_kit a2a_kit_size_32 a2a_default_style">
+   <a class="a2a_dd" href="https://www.addtoany.com/share"></a>
+   <a class="a2a_button_wechat"></a>
+   <a class="a2a_button_copy_link"></a>
+   <a class="a2a_button_twitter"></a>
+   <a class="a2a_button_email"></a>
+</div>
+<script async src="https://static.addtoany.com/menu/page.js"></script>
+<!-- AddToAny END -->
+</section><div class="d-print-none"><footer class="article__footer"><meta itemprop="dateModified" content="2022-04-15T00:00:00+00:00"><!-- start custom article footer snippet -->
+
+<!-- end custom article footer snippet -->
+<div class="article__subscribe"><div class="subscribe"><i class="fas fa-rss"></i> <a type="application/rss+xml" href="/feed.xml">Subscribe</a></div>
+</div><div class="article__license"><div class="license">
+    <p>This work is licensed under <a itemprop="license" rel="license" href="https://github.com/Real-king-Ph/Real-king-Ph.GitHub.io/blob/master/LICENSE">The MIT License</a> license.
+    </p>
+  </div></div></footer>
+<div class="article__section-navigator clearfix"><div class="previous"><span>PREVIOUS</span><a href="/2022/04/10/%E7%AC%AC-2-%E7%AB%A0-%E5%85%B3%E7%B3%BB%E6%95%B0%E6%8D%AE%E5%BA%93.html">第 2 章 关系数据库</a></div><div class="next"><span>NEXT</span><a href="/cheetsheet/2022/04/26/Linux-knowledge-conclusion.html">Linux 小结</a></div></div></div>
+
+</div>
+
+<script src="/assets/scripts/article.js">
+</script>
+
+
+<div class="post-categories">
+  
+  
+</div><div id="totop"
+   style="position: fixed; bottom: 90px; right: 40px; opacity: 0;background: url(/assets/images/topbutton.png) no-repeat center center;">
+   <a id="totop_a" title="Back To Top" style="width:64px; height:64px;display: block;"></a>
+</div>
+</div><section class="page__comments d-print-none"></section></article><!-- start custom main bottom snippet -->
+
+<!-- end custom main bottom snippet -->
+</div>
+            </div></div></div><div class="page__footer d-print-none">
+<footer class="footer py-4 js-page-footer">
+  <div class="main"><div itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="phrk"><meta itemprop="url" content="https://blog.ohtoai.fun/about/"><!-- Success is not final, failure is not fatal: it is the courage to continue that counts. -->
+        <meta itemprop="description" content="Success is not final, failure is not fatal: it is the courage to continue that counts."><div class="footer__author-links"><div class="author-links">
+  <ul class="menu menu--nowrap menu--inline"><link itemprop="url" href="https://blog.ohtoai.fun/about/"><li title="Send me an Email.">
+      <a class="button button--circle mail-button" itemprop="email" href="mailto:phrknfish@outlook.com" target="_blank">
+        <i class="fas fa-envelope"></i>
+      </a><li title="Follow me on Github.">
+        <a class="button button--circle github-button" itemprop="sameAs" href="https://github.com/Real-king-Ph" target="_blank">
+          <div class="icon"><svg fill="#000000" width="24px" height="24px" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
+  <path class="svgpath" data-index="path_0" fill="#272636" d="M0 525.2c0 223.6 143.3 413.7 343 483.5 26.9 6.8 22.8-12.4 22.8-25.4l0-88.7c-155.3 18.2-161.5-84.6-172-101.7-21.1-36-70.8-45.2-56-62.3 35.4-18.2 71.4 4.6 113.1 66.3 30.2 44.7 89.1 37.2 119 29.7 6.5-26.9 20.5-50.9 39.7-69.6C248.8 728.2 181.7 630 181.7 513.2c0-56.6 18.7-108.7 55.3-150.7-23.3-69.3 2.2-128.5 5.6-137.3 66.5-6 135.5 47.6 140.9 51.8 37.8-10.2 80.9-15.6 129.1-15.6 48.5 0 91.8 5.6 129.8 15.9 12.9-9.8 77-55.8 138.8-50.2 3.3 8.8 28.2 66.7 6.3 135 37.1 42.1 56 94.6 56 151.4 0 117-67.5 215.3-228.8 243.7 26.9 26.6 43.6 63.4 43.6 104.2l0 128.8c0.9 10.3 0 20.5 17.2 20.5C878.1 942.4 1024 750.9 1024 525.3c0-282.9-229.3-512-512-512C229.1 13.2 0 242.3 0 525.2L0 525.2z" />
+</svg>
+</div>
+        </a>
+      </li></ul>
+</div>
+</div>
+    </div><div class="site-info mt-2">
+      <div>© RK's blog 2022-2023,
+        Powered by <a title="Jekyll is a simple, blog-aware, static site generator." href="http://jekyllrb.com/">Jekyll</a> & <a
+        title="TeXt is a super customizable Jekyll theme." href="https://github.com/kitian616/jekyll-TeXt-theme">TeXt Theme</a>.
+      </div>
+      <p id="hitokoto">:D loading...</p>
+      <script src="https://v1.hitokoto.cn/?encode=js&select=%23hitokoto" defer></script>
+    </div>
+  </div>
+</footer>
+</div></div>
+    </div><script src="/assets/scripts/lib/modal.js"></script><div class="modal modal--overflow page__search-modal d-print-none js-page-search-modal"></div></div>
+
+
+<script src="/assets/scripts/lib/scroll-to.js"></script>
+<script src="/assets/scripts/lib/affix.js"></script>
+<script src="/assets/scripts/lib/toc.js"></script><script src="/assets/scripts/page.js"></script><!-- toc must before affix, since affix need to konw toc' height. --><script src="/assets/scripts/aside/toc.js"></script><script src="/assets/scripts/aside/affix.js"></script>
+    </div>
+    <script src="/assets/scripts/common.js"></script>
+  </body>
+</html>
+

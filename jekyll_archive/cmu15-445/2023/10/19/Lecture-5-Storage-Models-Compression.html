@@ -1,0 +1,383 @@
+<!DOCTYPE html><html lang="en">
+  <head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"><title>Lecture #05: Storage Models & Compression - RK's blog</title>
+
+<meta name="description" content="Trackerrefer to Sliderefer to Notemindmaproot((Lecture 5))  Workloads    OLTP    OLAP    HTAP  Storage Models    N-Ary    DSM  Columnar Compression    Run-Le...">
+<link rel="canonical" href="https://blog.ohtoai.fun/cmu15-445/2023/10/19/Lecture-5-Storage-Models-Compression.html"><link rel="alternate" type="application/rss+xml" title="RK's blog" href="/feed.xml"><!-- start favicons snippet, use https://realfavicongenerator.net/ --><link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png"><link rel="manifest" href="/assets/site.webmanifest"><link rel="mask-icon" href="/assets/safari-pinned-tab.svg" color="#fc4d50"><link rel="shortcut icon" href="/assets/favicon.ico">
+
+<meta name="msapplication-TileColor" content="#ffc40d"><meta name="msapplication-config" content="/assets/browserconfig.xml">
+
+<meta name="theme-color" content="#ffffff">
+<!-- end favicons snippet --><link rel="stylesheet" href="/assets/css/main.css"><link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.2/css/all.min.css" ><!-- start custom head snippets -->
+<link href='//cdn.jsdelivr.net/npm/@waline/client/dist/waline.css' rel='stylesheet' />
+<!-- end custom head snippets -->
+<script src="/assets/scripts/utils/utils.js"></script>
+    <script src = "/assets/scripts/lib/throttle.js"></script>
+    <script src = "/assets/scripts/lib/lazyload.js"></script>
+
+    <!-- ms clarity --><script>
+  (function() {
+    var TEXT_VARIABLES = {
+      version: '2.2.6',
+      sources: {
+        font_awesome: 'https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.2/css/all.min.css',
+        jquery: 'https://cdn.bootcdn.net/ajax/libs/jquery/3.1.1/jquery.min.js',
+        leancloud_js_sdk: '//cdn.jsdelivr.net/npm/leancloud-storage@3.13.2/dist/av-min.js',
+        chart: 'https://cdn.bootcdn.net/ajax/libs/Chart.js/4.4.0/chart.umd.min.js',
+        gitalk: {
+          js: 'https://cdn.bootcdn.net/ajax/libs/gitalk/1.2.2/gitalk.min.js',
+          css: 'https://cdn.bootcdn.net/ajax/libs/gitalk/1.2.2/gitalk.min.css'
+        },
+        valine: 'https://unpkg.com/valine/dist/Valine.min.js',
+        waline: 'https://cdn.jsdelivr.net/npm/@waline/client/dist/waline.js',
+        mathjax: 'https://cdn.bootcdn.net/ajax/libs/mathjax/3.2.0/es5/tex-chtml.js',
+        mermaid: 'https://cdn.bootcdn.net/ajax/libs/mermaid/10.4.0/mermaid.min.js'
+      },
+      site: {
+        toc: {
+          selectors: 'h2,h3,h4'
+        }
+      },
+      paths: {
+        search_js: '/assets/search.js'
+      }
+    };
+    window.TEXT_VARIABLES = TEXT_VARIABLES;
+  })();
+</script>
+</head>
+  <body>
+    <div class="root" data-is-touch="false">
+      <div class="layout--page js-page-root"><div class="page__main js-page-main page__viewport has-aside cell cell--auto">
+
+      <div class="page__main-inner"><div class="page__header d-print-none"><header class="header"><div class="main">
+      <div class="header__title">
+        <div class="header__brand"><svg width="64px" height="64px" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><title>love-france-heart-ico</title><g id="love-france-heart-ico"><circle cx="34" cy="35" r="23" style="fill:#e5efef"/><path d="M22.973,8.665a6.775,6.775,0,0,0-4.764,2.005,6.777,6.777,0,0,0-4.765-2.005c-3.947,0-7.147,3.5-7.147,7.826s8.338,11.738,11.912,14.347C21.782,28.229,30.12,20.813,30.12,16.491S26.92,8.665,22.973,8.665Z" style="fill:#f53e28;stroke:#4c241d;stroke-linecap:round;stroke-linejoin:round;stroke-width:2px"/><path d="M49.973,35.665a6.775,6.775,0,0,0-4.764,2.005,6.777,6.777,0,0,0-4.765-2.005c-3.947,0-7.147,3.5-7.147,7.826s8.338,11.738,11.912,14.347C48.782,55.229,57.12,47.813,57.12,43.491S53.92,35.665,49.973,35.665Z" style="fill:#fff;stroke:#4c241d;stroke-linecap:round;stroke-linejoin:round;stroke-width:2px"/><line x1="26" y1="35" x2="26" y2="37" style="fill:none;stroke:#4c241d;stroke-linecap:round;stroke-linejoin:round;stroke-width:2px"/><line x1="26" y1="41" x2="26" y2="43" style="fill:none;stroke:#4c241d;stroke-linecap:round;stroke-linejoin:round;stroke-width:2px"/><line x1="22" y1="39" x2="24" y2="39" style="fill:none;stroke:#4c241d;stroke-linecap:round;stroke-linejoin:round;stroke-width:2px"/><line x1="28" y1="39" x2="30" y2="39" style="fill:none;stroke:#4c241d;stroke-linecap:round;stroke-linejoin:round;stroke-width:2px"/><circle cx="37.5" cy="7.5" r="2.5" style="fill:none;stroke:#4c241d;stroke-linecap:round;stroke-linejoin:round;stroke-width:2px"/><circle cx="4.5" cy="59.5" r="2.5" style="fill:none;stroke:#4c241d;stroke-linecap:round;stroke-linejoin:round;stroke-width:2px"/><path d="M32.651,29.1a1.069,1.069,0,1,1-1.069-1.069A1.069,1.069,0,0,1,32.651,29.1Z" style="fill:#4c241d"/><path d="M59.651,27.1a1.069,1.069,0,1,1-1.069-1.069A1.069,1.069,0,0,1,59.651,27.1Z" style="fill:#4c241d"/><path d="M6.651,4.1A1.069,1.069,0,1,1,5.582,3.029,1.069,1.069,0,0,1,6.651,4.1Z" style="fill:#4c241d"/><path d="M58.651,58.1a1.069,1.069,0,1,1-1.069-1.069A1.069,1.069,0,0,1,58.651,58.1Z" style="fill:#4c241d"/><path d="M5.651,32.1a1.069,1.069,0,1,1-1.069-1.069A1.069,1.069,0,0,1,5.651,32.1Z" style="fill:#4c241d"/><path d="M46.04,18.49a2.605,2.605,0,0,0-1.831.77,2.609,2.609,0,0,0-1.832-.77A2.887,2.887,0,0,0,39.63,21.5c0,1.661,3.2,4.512,4.579,5.515,1.373-1,4.578-3.854,4.578-5.515A2.887,2.887,0,0,0,46.04,18.49Z" style="fill:#9dc1e4;stroke:#4c241d;stroke-linecap:round;stroke-linejoin:round;stroke-width:2px"/><path d="M57.04,4.49a2.605,2.605,0,0,0-1.831.77,2.609,2.609,0,0,0-1.832-.77A2.887,2.887,0,0,0,50.63,7.5c0,1.661,3.2,4.512,4.579,5.515,1.373-1,4.578-3.854,4.578-5.515A2.887,2.887,0,0,0,57.04,4.49Z" style="fill:#fff;stroke:#4c241d;stroke-linecap:round;stroke-linejoin:round;stroke-width:2px"/><path d="M14.04,39.49a2.605,2.605,0,0,0-1.831.77,2.609,2.609,0,0,0-1.832-.77A2.887,2.887,0,0,0,7.63,42.5c0,1.661,3.205,4.512,4.579,5.515,1.373-1,4.578-3.854,4.578-5.515A2.887,2.887,0,0,0,14.04,39.49Z" style="fill:#9dc1e4;stroke:#4c241d;stroke-linecap:round;stroke-linejoin:round;stroke-width:2px"/><path d="M27.04,51.49a2.605,2.605,0,0,0-1.831.77,2.609,2.609,0,0,0-1.832-.77A2.887,2.887,0,0,0,20.63,54.5c0,1.661,3.205,4.512,4.579,5.515,1.373-1,4.578-3.854,4.578-5.515A2.887,2.887,0,0,0,27.04,51.49Z" style="fill:#f53e28;stroke:#4c241d;stroke-linecap:round;stroke-linejoin:round;stroke-width:2px"/></g></svg><a title="不知名211大三在读
+" href="/">RK's blog</a></div>
+      </div><nav class="navigation">
+        <ul><li class="navigation__item"><a href="/archive/">Archive</a></li><li class="navigation__item"><a href="/about/">About</a></li><li class="navigation__item"><a href="/Friend-Link-House/">Links</a></li><li class="navigation__item"><a href="https://blogroll.rklittle.workers.dev/">blogroll</a></li></ul>
+      </nav></div>
+  </header>
+</div><div class="page__content"><div class ="main"><div class="grid grid--reverse">
+
+              <div class="col-aside d-print-none js-col-aside"><aside class="page__aside js-page-aside"><div class="toc-aside js-toc-root"></div>
+</aside></div>
+
+              <div class="col-main cell cell--auto"><!-- start custom main top snippet -->
+
+<!-- end custom main top snippet -->
+<article itemscope itemtype="http://schema.org/Article"><div class="article__header"><header><h1>Lecture #05: Storage Models & Compression</h1></header><span class="split-space">&nbsp;</span>
+          <a class="edit-on-github"
+            title="Edit on Github"
+            href="https://github.com/Real-king-Ph/Real-king-Ph.GitHub.io/tree/master/_posts/2023-09-12M/2023-10-19-Lecture-5-Storage-Models-Compression.md">
+            <i class="far fa-edit"></i></a></div><meta itemprop="headline" content="Lecture #05: Storage Models & Compression"><div class="article__info clearfix"><ul class="left-col menu"><li>
+              <a class="button button--secondary button--pill button--sm"
+                href="/archive/?tag=%E6%95%B0%E6%8D%AE%E5%BA%93">数据库</a>
+            </li><li>
+              <a class="button button--secondary button--pill button--sm"
+                href="/archive/?tag=CMU15-445">CMU15-445</a>
+            </li></ul><ul class="right-col menu"><li><i class="far fa-calendar-alt"></i> <span>Oct 19, 2023</span>
+            </li><li>
+              <i class="far fa-edit"></i> <span>Oct 23, 2023</span>
+            </li><li><i class="fa-solid fa-eye"></i> <span class="waline-pageview-count" data-path="/cmu15-445/2023/10/19/Lecture-5-Storage-Models-Compression.html">0</span> views</li></ul></div><meta itemprop="author" content="phrk"/><meta itemprop="datePublished" content="2023-10-19T13:42:33+00:00">
+    <meta itemprop="keywords" content="数据库,CMU15-445"><div class="js-article-content"><div class="layout--article"><!-- start custom article top snippet -->
+
+<!-- end custom article top snippet -->
+<div class="article__content" itemprop="articleBody"><p><a href="/cmu15-445/2023/10/02/CMU-Project-Tracker.html" class="button button--outline-secondary button--pill"><i class="fa-solid fa-link"></i> Tracker</a></p>
+
+<p><a href="https://15445.courses.cs.cmu.edu/fall2022/slides/05-storage3.pdf">refer to Slide</a></p>
+
+<p><a href="https://15445.courses.cs.cmu.edu/fall2022/notes/05-storage3.pdf">refer to Note</a></p>
+
+<pre><code class="language-mermaid">mindmap
+root((Lecture 5))
+  Workloads
+    OLTP
+    OLAP
+    HTAP
+  Storage Models
+    N-Ary
+    DSM
+  Columnar Compression
+    Run-Length Encoding
+    Bit-Packing Encoding
+    Delta Encoding
+    Incremental Encoding
+    Dictionary Encoding
+
+
+</code></pre>
+
+<h2 id="database-workloads">Database workloads</h2>
+
+<h3 id="oltp">OLTP</h3>
+
+<p>OLTP: On-Line Transaction Processing</p>
+
+<p>每次快速的对一个小范围的数据进行读取、更新的操作。</p>
+
+<p><img src="https://imgur.com/DJTL435.png" alt="OLTP" /></p>
+
+<h3 id="olap">OLAP</h3>
+
+<p>OLAP: On-Line Analytical Processing</p>
+
+<p>OLAP 是用来支持复杂的分析操作，提供决策支持等</p>
+
+<p><img src="https://imgur.com/mMuGQja.png" alt="OLAP" /></p>
+
+<h3 id="htap">HTAP</h3>
+
+<p>Hybrid Transaction + Analytical Processing</p>
+
+<p>一种新的 workload ，将 OLTP 和 OOLAP 结合起来。</p>
+
+<p><img src="https://s2.loli.net/2023/10/19/VGxJ9U7pNbZWYMe.png" alt="OLTP OLAP HTAP" /></p>
+
+<hr />
+
+<h2 id="stroage-models">Stroage Models</h2>
+
+<h3 id="n-ary-storage-model-nsm">N-Ary Storage Model (NSM)</h3>
+
+<p>在 <code class="language-plaintext highlighter-rouge">n-ary</code> 的存储模式中，DBMS 连续的存储所有的、包含所有 <code class="language-plaintext highlighter-rouge">arributes</code> 的 <code class="language-plaintext highlighter-rouge">tuple</code> 在一个单独的页面中。</p>
+
+<p><img src="https://imgur.com/XiN0UkV.png" alt="n-ary-model" /></p>
+
+<p>这对于 OLTP 来说是十分理想的。</p>
+
+<p>Advantages:</p>
+<ul>
+  <li>插入，更新，删除非常快</li>
+  <li>对于需要整个 <code class="language-plaintext highlighter-rouge">tuple</code> 的查询非常友好</li>
+</ul>
+
+<p>Disadvantages:</p>
+<ul>
+  <li>对于需要扫描整个表或者只需要一个属性的查询非常不好</li>
+</ul>
+
+<blockquote>
+  <p><img src="https://imgur.com/zMMWPiu.png" alt="" /></p>
+</blockquote>
+
+<h3 id="decompositrion-storage-model-dsm">Decompositrion Storage Model (DSM)</h3>
+
+<p>将所有 <code class="language-plaintext highlighter-rouge">tuples</code> 中的每个 <code class="language-plaintext highlighter-rouge">attribute</code> 单独分出来进行存储</p>
+
+<blockquote>
+  <p>也可以成为 “列存储 (column store)”</p>
+</blockquote>
+
+<p>对于只读的 OLAP 操作非常友好，尤其是那些只需要扫描部分 <code class="language-plaintext highlighter-rouge">attributes</code> 的操作来说。</p>
+
+<p><img src="https://imgur.com/iONtz5L.png" alt="" /></p>
+
+<p>Advantages:</p>
+<ul>
+  <li>减少 I/O 的浪费</li>
+  <li>更好的进行查询以及将数据进行压缩</li>
+</ul>
+
+<p>Disadvantages:</p>
+<ul>
+  <li>对于单点修改查询更新这些操作比较慢。</li>
+</ul>
+
+<p>为了实现这种操作通常有两种操作方法。</p>
+<ol>
+  <li>为每个属性设置固定的字长，这样我们只需要得到 <code class="language-plaintext highlighter-rouge">offset</code> 就可以准确的查找到我们所需要的数据</li>
+  <li>一个更为罕见的操作是，使用一个形如 <code class="language-plaintext highlighter-rouge">(id : pos)</code> 的 tuple 来存储值，表示第 <code class="language-plaintext highlighter-rouge">id</code> 的值存储在 <code class="language-plaintext highlighter-rouge">pos</code> 位置上。</li>
+</ol>
+
+<p><img src="https://imgur.com/IedfkNq.png" alt="" /></p>
+
+<h2 id="database-compression">Database Compression</h2>
+
+<p>I/O 是非常耗时的，通常是整个数据库的瓶颈，所以 DBMS 中广泛的采用压缩算法来提高 DBMS 的表现。</p>
+
+<p>通常我们需要在 <strong>速度</strong> 和 <strong>压缩率</strong> 之间进行取舍。</p>
+
+<h3 id="压缩颗粒度">压缩颗粒度</h3>
+<ul>
+  <li>Block Level</li>
+  <li>Tuple Level 对整个 <code class="language-plaintext highlighter-rouge">tuple</code> 进行压缩 (NSM Only)</li>
+  <li>Attribute Level</li>
+  <li>Columnar Level</li>
+</ul>
+
+<h2 id="naive-compression">Naive Compression</h2>
+
+<p>使用 “general-purpose” 的压缩算法通常也是一种解决办法。不过一旦使用着这种方法之后，DBMS 就不知道我们进行操作的数据是什么，直到解压完。</p>
+
+<p>provided as input:<br />
+→ LZO (1996), LZ4 (2011), Snappy (2011),
+Oracle OZIP (2014), Zstd (2015)</p>
+
+<p><img src="https://imgur.com/btfm5p9.png" alt="" /></p>
+
+<p>为了提高速度，我们需要另外的压缩方法，即使是在压缩之后，我们也有办法获取其中的信息来加速。</p>
+
+<p><img src="https://imgur.com/gmB5Ith.png" alt="" /></p>
+
+<h2 id="columnar-compression">Columnar Compression</h2>
+
+<h3 id="run-length-encodingrle">Run-Length Encoding(RLE)</h3>
+
+<p>可以将一些连续出现在同一列上的值压缩成一个形如<code class="language-plaintext highlighter-rouge">(value : pos : num)</code> 的 <code class="language-plaintext highlighter-rouge">triplets</code>。</p>
+
+<p>其中:</p>
+<ol>
+  <li><code class="language-plaintext highlighter-rouge">value</code> 表示值</li>
+  <li><code class="language-plaintext highlighter-rouge">pos</code> 表示该值的起始位置</li>
+  <li><code class="language-plaintext highlighter-rouge">num</code> 表示该值重复的次数</li>
+</ol>
+
+<p><img src="https://imgur.com/4UVuuqG.png" alt="" /></p>
+
+<blockquote>
+  <p>不过该方法可能存在一些缺陷</p>
+
+  <p><img src="https://imgur.com/odwQgWe.png" alt="" /></p>
+
+  <p>经过转换后</p>
+
+  <p><img src="https://imgur.com/WFfzLgP.png" alt="" /></p>
+</blockquote>
+
+<h3 id="bit-packing-encoding">Bit-Packing Encoding</h3>
+
+<p>一些数据对我们来说是十分冗余的，我们可以通过 Bit-Packing 的方式来减少这些冗余。</p>
+
+<p><img src="https://imgur.com/WLI2OFf.png" alt="" /></p>
+
+<p>将 <code class="language-plaintext highlighter-rouge">int64</code> 转换为 <code class="language-plaintext highlighter-rouge">int8</code> 大大减少了需要的空间。</p>
+
+<p>不过该方法存在一些缺陷，可能会存在部分信息有不符合 <code class="language-plaintext highlighter-rouge">int8</code> 的信息。</p>
+
+<p>因此，我们需要如下的方式进行存储。</p>
+
+<p><img src="https://imgur.com/K8lQr8R.png" alt="" /></p>
+
+<p>不过该方法只能在额外存储信息较少的时候进行使用。</p>
+
+<h3 id="bitmap-encoding">Bitmap Encoding</h3>
+
+<p>当我们每个 <code class="language-plaintext highlighter-rouge">attribute</code> 较少的时候，我们可以采用 Bitmap 的方式进行存储。</p>
+
+<p>例如，只存在 <code class="language-plaintext highlighter-rouge">F</code> 和 <code class="language-plaintext highlighter-rouge">M</code> 两种值的时候，我们就可以是由 <code class="language-plaintext highlighter-rouge">01</code> 来表示是或者不是。</p>
+
+<p><img src="https://imgur.com/PNmEvKe.png" alt="" /></p>
+
+<h3 id="delta-encoding">Delta Encoding</h3>
+
+<p>在许多情况下，例如室温多少，我们的统计结果里可能存在较为密集的值在一定的范围内。</p>
+
+<p>因此我们通过确定一个值后，往后的所有值都可以通过 <code class="language-plaintext highlighter-rouge">delta</code> 的形式存储</p>
+
+<p><img src="https://imgur.com/XQe8W5Y.png" alt="" /></p>
+
+<h3 id="incremental-encoding">Incremental Encoding</h3>
+
+<p>我们通常也可以通过取 <strong>前缀 / 后缀</strong> 的形式来得到我们的最终结果。</p>
+
+<p><img src="https://imgur.com/oM9zEKa.png" alt="" /></p>
+
+<h3 id="dictionary-compression">Dictionary Compression</h3>
+
+<p>当一张表中可能存在多个值，且这多个值存在在不同的地方，那么我们就可以通过字典的形式得到这些值所在的位置。</p>
+
+<p><img src="https://imgur.com/GgSgrMr.png" alt="" /></p>
+
+<p>这也是最常用的压缩方法。</p>
+
+</div><section class="article__sharing d-print-none"><!-- AddToAny BEGIN -->
+<div class="a2a_kit a2a_kit_size_32 a2a_default_style">
+   <a class="a2a_dd" href="https://www.addtoany.com/share"></a>
+   <a class="a2a_button_wechat"></a>
+   <a class="a2a_button_copy_link"></a>
+   <a class="a2a_button_twitter"></a>
+   <a class="a2a_button_email"></a>
+</div>
+<script async src="https://static.addtoany.com/menu/page.js"></script>
+<!-- AddToAny END -->
+</section><div class="d-print-none"><footer class="article__footer"><meta itemprop="dateModified" content="2023-10-19T13:42:33+00:00"><!-- start custom article footer snippet -->
+
+<!-- end custom article footer snippet -->
+<div class="article__subscribe"><div class="subscribe"><i class="fas fa-rss"></i> <a type="application/rss+xml" href="/feed.xml">Subscribe</a></div>
+</div><div class="article__license"><div class="license">
+    <p>This work is licensed under <a itemprop="license" rel="license" href="https://github.com/Real-king-Ph/Real-king-Ph.GitHub.io/blob/master/LICENSE">The MIT License</a> license.
+    </p>
+  </div></div></footer>
+<div class="article__section-navigator clearfix"><div class="previous"><span>PREVIOUS</span><a href="/2023/10/15/heart-of-Clean-Springs.html">清泉之心</a></div><div class="next"><span>NEXT</span><a href="/cmu15-445/2023/10/23/Lecture-6-Memory-Management.html">Lecture #06: Memory Management</a></div></div></div>
+
+</div>
+
+<script src="/assets/scripts/article.js">
+</script>
+
+
+<div class="post-categories">
+  
+  
+  <a class="button button--outline-secondary button--pill"
+    href="/categories/CMU15-445">CMU15-445</a>
+  
+  
+</div><div id="totop"
+   style="position: fixed; bottom: 90px; right: 40px; opacity: 0;background: url(/assets/images/topbutton.png) no-repeat center center;">
+   <a id="totop_a" title="Back To Top" style="width:64px; height:64px;display: block;"></a>
+</div>
+</div><section class="page__comments d-print-none"></section></article><!-- start custom main bottom snippet -->
+
+<!-- end custom main bottom snippet -->
+</div>
+            </div></div></div><div class="page__footer d-print-none">
+<footer class="footer py-4 js-page-footer">
+  <div class="main"><div itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="phrk"><meta itemprop="url" content="https://blog.ohtoai.fun/about/"><!-- Success is not final, failure is not fatal: it is the courage to continue that counts. -->
+        <meta itemprop="description" content="Success is not final, failure is not fatal: it is the courage to continue that counts."><div class="footer__author-links"><div class="author-links">
+  <ul class="menu menu--nowrap menu--inline"><link itemprop="url" href="https://blog.ohtoai.fun/about/"><li title="Send me an Email.">
+      <a class="button button--circle mail-button" itemprop="email" href="mailto:phrknfish@outlook.com" target="_blank">
+        <i class="fas fa-envelope"></i>
+      </a><li title="Follow me on Github.">
+        <a class="button button--circle github-button" itemprop="sameAs" href="https://github.com/Real-king-Ph" target="_blank">
+          <div class="icon"><svg fill="#000000" width="24px" height="24px" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
+  <path class="svgpath" data-index="path_0" fill="#272636" d="M0 525.2c0 223.6 143.3 413.7 343 483.5 26.9 6.8 22.8-12.4 22.8-25.4l0-88.7c-155.3 18.2-161.5-84.6-172-101.7-21.1-36-70.8-45.2-56-62.3 35.4-18.2 71.4 4.6 113.1 66.3 30.2 44.7 89.1 37.2 119 29.7 6.5-26.9 20.5-50.9 39.7-69.6C248.8 728.2 181.7 630 181.7 513.2c0-56.6 18.7-108.7 55.3-150.7-23.3-69.3 2.2-128.5 5.6-137.3 66.5-6 135.5 47.6 140.9 51.8 37.8-10.2 80.9-15.6 129.1-15.6 48.5 0 91.8 5.6 129.8 15.9 12.9-9.8 77-55.8 138.8-50.2 3.3 8.8 28.2 66.7 6.3 135 37.1 42.1 56 94.6 56 151.4 0 117-67.5 215.3-228.8 243.7 26.9 26.6 43.6 63.4 43.6 104.2l0 128.8c0.9 10.3 0 20.5 17.2 20.5C878.1 942.4 1024 750.9 1024 525.3c0-282.9-229.3-512-512-512C229.1 13.2 0 242.3 0 525.2L0 525.2z" />
+</svg>
+</div>
+        </a>
+      </li></ul>
+</div>
+</div>
+    </div><div class="site-info mt-2">
+      <div>© RK's blog 2022-2023,
+        Powered by <a title="Jekyll is a simple, blog-aware, static site generator." href="http://jekyllrb.com/">Jekyll</a> & <a
+        title="TeXt is a super customizable Jekyll theme." href="https://github.com/kitian616/jekyll-TeXt-theme">TeXt Theme</a>.
+      </div>
+      <p id="hitokoto">:D loading...</p>
+      <script src="https://v1.hitokoto.cn/?encode=js&select=%23hitokoto" defer></script>
+    </div>
+  </div>
+</footer>
+</div></div>
+    </div><script src="/assets/scripts/lib/modal.js"></script><div class="modal modal--overflow page__search-modal d-print-none js-page-search-modal"></div></div>
+
+
+<script src="/assets/scripts/lib/scroll-to.js"></script>
+<script src="/assets/scripts/lib/affix.js"></script>
+<script src="/assets/scripts/lib/toc.js"></script><script src="/assets/scripts/page.js"></script><!-- toc must before affix, since affix need to konw toc' height. --><script src="/assets/scripts/aside/toc.js"></script><script src="/assets/scripts/aside/affix.js"></script><script>
+  window.Lazyload.js('https://cdn.bootcdn.net/ajax/libs/mermaid/10.4.0/mermaid.min.js', function() {
+    mermaid.initialize({
+      startOnLoad: true
+    });
+    mermaid.init(undefined, '.language-mermaid');
+  });
+</script>
+
+    </div>
+    <script src="/assets/scripts/common.js"></script>
+  </body>
+</html>
+

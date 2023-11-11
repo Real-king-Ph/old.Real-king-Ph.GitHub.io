@@ -1,0 +1,770 @@
+<!DOCTYPE html><html lang="en">
+  <head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"><title>Linux 阶段测试实验报告 - RK's blog</title>
+
+<meta name="description" content="不知名211大三在读
+">
+<link rel="canonical" href="https://blog.ohtoai.fun/tmp/Linux_report.html"><link rel="alternate" type="application/rss+xml" title="RK's blog" href="/feed.xml"><!-- start favicons snippet, use https://realfavicongenerator.net/ --><link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png"><link rel="manifest" href="/assets/site.webmanifest"><link rel="mask-icon" href="/assets/safari-pinned-tab.svg" color="#fc4d50"><link rel="shortcut icon" href="/assets/favicon.ico">
+
+<meta name="msapplication-TileColor" content="#ffc40d"><meta name="msapplication-config" content="/assets/browserconfig.xml">
+
+<meta name="theme-color" content="#ffffff">
+<!-- end favicons snippet --><link rel="stylesheet" href="/assets/css/main.css"><link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.2/css/all.min.css" ><!-- start custom head snippets -->
+<link href='//cdn.jsdelivr.net/npm/@waline/client/dist/waline.css' rel='stylesheet' />
+<!-- end custom head snippets -->
+<script src="/assets/scripts/utils/utils.js"></script>
+    <script src = "/assets/scripts/lib/throttle.js"></script>
+    <script src = "/assets/scripts/lib/lazyload.js"></script>
+
+    <!-- ms clarity --><script>
+  (function() {
+    var TEXT_VARIABLES = {
+      version: '2.2.6',
+      sources: {
+        font_awesome: 'https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.2/css/all.min.css',
+        jquery: 'https://cdn.bootcdn.net/ajax/libs/jquery/3.1.1/jquery.min.js',
+        leancloud_js_sdk: '//cdn.jsdelivr.net/npm/leancloud-storage@3.13.2/dist/av-min.js',
+        chart: 'https://cdn.bootcdn.net/ajax/libs/Chart.js/4.4.0/chart.umd.min.js',
+        gitalk: {
+          js: 'https://cdn.bootcdn.net/ajax/libs/gitalk/1.2.2/gitalk.min.js',
+          css: 'https://cdn.bootcdn.net/ajax/libs/gitalk/1.2.2/gitalk.min.css'
+        },
+        valine: 'https://unpkg.com/valine/dist/Valine.min.js',
+        waline: 'https://cdn.jsdelivr.net/npm/@waline/client/dist/waline.js',
+        mathjax: 'https://cdn.bootcdn.net/ajax/libs/mathjax/3.2.0/es5/tex-chtml.js',
+        mermaid: 'https://cdn.bootcdn.net/ajax/libs/mermaid/10.4.0/mermaid.min.js'
+      },
+      site: {
+        toc: {
+          selectors: 'h2,h3,h4'
+        }
+      },
+      paths: {
+        search_js: '/assets/search.js'
+      }
+    };
+    window.TEXT_VARIABLES = TEXT_VARIABLES;
+  })();
+</script>
+</head>
+  <body>
+    <div class="root" data-is-touch="false">
+      <div class="layout--page js-page-root"><div class="page__main js-page-main page__viewport cell cell--auto">
+
+      <div class="page__main-inner"><div class="page__header d-print-none"><header class="header"><div class="main">
+      <div class="header__title">
+        <div class="header__brand"><svg width="64px" height="64px" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><title>love-france-heart-ico</title><g id="love-france-heart-ico"><circle cx="34" cy="35" r="23" style="fill:#e5efef"/><path d="M22.973,8.665a6.775,6.775,0,0,0-4.764,2.005,6.777,6.777,0,0,0-4.765-2.005c-3.947,0-7.147,3.5-7.147,7.826s8.338,11.738,11.912,14.347C21.782,28.229,30.12,20.813,30.12,16.491S26.92,8.665,22.973,8.665Z" style="fill:#f53e28;stroke:#4c241d;stroke-linecap:round;stroke-linejoin:round;stroke-width:2px"/><path d="M49.973,35.665a6.775,6.775,0,0,0-4.764,2.005,6.777,6.777,0,0,0-4.765-2.005c-3.947,0-7.147,3.5-7.147,7.826s8.338,11.738,11.912,14.347C48.782,55.229,57.12,47.813,57.12,43.491S53.92,35.665,49.973,35.665Z" style="fill:#fff;stroke:#4c241d;stroke-linecap:round;stroke-linejoin:round;stroke-width:2px"/><line x1="26" y1="35" x2="26" y2="37" style="fill:none;stroke:#4c241d;stroke-linecap:round;stroke-linejoin:round;stroke-width:2px"/><line x1="26" y1="41" x2="26" y2="43" style="fill:none;stroke:#4c241d;stroke-linecap:round;stroke-linejoin:round;stroke-width:2px"/><line x1="22" y1="39" x2="24" y2="39" style="fill:none;stroke:#4c241d;stroke-linecap:round;stroke-linejoin:round;stroke-width:2px"/><line x1="28" y1="39" x2="30" y2="39" style="fill:none;stroke:#4c241d;stroke-linecap:round;stroke-linejoin:round;stroke-width:2px"/><circle cx="37.5" cy="7.5" r="2.5" style="fill:none;stroke:#4c241d;stroke-linecap:round;stroke-linejoin:round;stroke-width:2px"/><circle cx="4.5" cy="59.5" r="2.5" style="fill:none;stroke:#4c241d;stroke-linecap:round;stroke-linejoin:round;stroke-width:2px"/><path d="M32.651,29.1a1.069,1.069,0,1,1-1.069-1.069A1.069,1.069,0,0,1,32.651,29.1Z" style="fill:#4c241d"/><path d="M59.651,27.1a1.069,1.069,0,1,1-1.069-1.069A1.069,1.069,0,0,1,59.651,27.1Z" style="fill:#4c241d"/><path d="M6.651,4.1A1.069,1.069,0,1,1,5.582,3.029,1.069,1.069,0,0,1,6.651,4.1Z" style="fill:#4c241d"/><path d="M58.651,58.1a1.069,1.069,0,1,1-1.069-1.069A1.069,1.069,0,0,1,58.651,58.1Z" style="fill:#4c241d"/><path d="M5.651,32.1a1.069,1.069,0,1,1-1.069-1.069A1.069,1.069,0,0,1,5.651,32.1Z" style="fill:#4c241d"/><path d="M46.04,18.49a2.605,2.605,0,0,0-1.831.77,2.609,2.609,0,0,0-1.832-.77A2.887,2.887,0,0,0,39.63,21.5c0,1.661,3.2,4.512,4.579,5.515,1.373-1,4.578-3.854,4.578-5.515A2.887,2.887,0,0,0,46.04,18.49Z" style="fill:#9dc1e4;stroke:#4c241d;stroke-linecap:round;stroke-linejoin:round;stroke-width:2px"/><path d="M57.04,4.49a2.605,2.605,0,0,0-1.831.77,2.609,2.609,0,0,0-1.832-.77A2.887,2.887,0,0,0,50.63,7.5c0,1.661,3.2,4.512,4.579,5.515,1.373-1,4.578-3.854,4.578-5.515A2.887,2.887,0,0,0,57.04,4.49Z" style="fill:#fff;stroke:#4c241d;stroke-linecap:round;stroke-linejoin:round;stroke-width:2px"/><path d="M14.04,39.49a2.605,2.605,0,0,0-1.831.77,2.609,2.609,0,0,0-1.832-.77A2.887,2.887,0,0,0,7.63,42.5c0,1.661,3.205,4.512,4.579,5.515,1.373-1,4.578-3.854,4.578-5.515A2.887,2.887,0,0,0,14.04,39.49Z" style="fill:#9dc1e4;stroke:#4c241d;stroke-linecap:round;stroke-linejoin:round;stroke-width:2px"/><path d="M27.04,51.49a2.605,2.605,0,0,0-1.831.77,2.609,2.609,0,0,0-1.832-.77A2.887,2.887,0,0,0,20.63,54.5c0,1.661,3.205,4.512,4.579,5.515,1.373-1,4.578-3.854,4.578-5.515A2.887,2.887,0,0,0,27.04,51.49Z" style="fill:#f53e28;stroke:#4c241d;stroke-linecap:round;stroke-linejoin:round;stroke-width:2px"/></g></svg><a title="不知名211大三在读
+" href="/">RK's blog</a></div>
+      </div><nav class="navigation">
+        <ul><li class="navigation__item"><a href="/archive/">Archive</a></li><li class="navigation__item"><a href="/about/">About</a></li><li class="navigation__item"><a href="/Friend-Link-House/">Links</a></li><li class="navigation__item"><a href="https://blogroll.rklittle.workers.dev/">blogroll</a></li></ul>
+      </nav></div>
+  </header>
+</div><div class="page__content"><div class ="main"><div class="grid grid--reverse">
+
+              <div class="col-aside d-print-none js-col-aside"></div>
+
+              <div class="col-main cell cell--auto"><!-- start custom main top snippet -->
+
+<!-- end custom main top snippet -->
+<article itemscope itemtype="http://schema.org/Article"><div class="article__header"><header><h1>Linux 阶段测试实验报告</h1></header></div><meta itemprop="headline" content="Linux 阶段测试实验报告"><div class="article__info clearfix"><ul class="right-col menu"><li><i class="fa-solid fa-eye"></i> <span class="waline-pageview-count" data-path="/tmp/Linux_report.html">0</span> views</li></ul></div><meta itemprop="author" content="phrk"/><div class="js-article-content"><div class="layout--article"><!-- start custom article top snippet -->
+
+<!-- end custom article top snippet -->
+<div class="article__content" itemprop="articleBody"><h2 id="目的">目的</h2>
+
+<ol>
+  <li>掌握 linux 的系统安装</li>
+  <li>linux 命令行测试</li>
+  <li>远程连接</li>
+</ol>
+
+<h2 id="环境信息">环境信息</h2>
+
+<h3 id="wsl">wsl</h3>
+
+<p>在 windows 的 powershell 输入 <code class="language-plaintext highlighter-rouge">sysinfo</code> 的信息，仅展示重要信息。</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>栏目</th>
+      <th>信息</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>OS 名称</td>
+      <td>Microsoft Windows 11 家庭中文版</td>
+    </tr>
+    <tr>
+      <td>OS 版本</td>
+      <td>10.0.22000 暂缺 Build 22000</td>
+    </tr>
+    <tr>
+      <td>OS 制造商</td>
+      <td>Microsoft Corporation</td>
+    </tr>
+    <tr>
+      <td>OS 配置</td>
+      <td>独立工作站</td>
+    </tr>
+    <tr>
+      <td>OS 构建类型</td>
+      <td>Multiprocessor Free</td>
+    </tr>
+    <tr>
+      <td>系统制造商</td>
+      <td>LENOVO</td>
+    </tr>
+    <tr>
+      <td>系统型号</td>
+      <td>82LM</td>
+    </tr>
+    <tr>
+      <td>系统类型</td>
+      <td>x64-based PC</td>
+    </tr>
+    <tr>
+      <td>处理器</td>
+      <td>安装了 1 个处理器。<br />[01]:AMD64 Family 23 Model 104 Stepping 1 AuthenticAMD ~2100 Mhz</td>
+    </tr>
+    <tr>
+      <td>BIOS 版本</td>
+      <td>LENOVO G5CN58WW(V2.04), 2021/10/26</td>
+    </tr>
+    <tr>
+      <td>物理内存总量</td>
+      <td>15,706 MB</td>
+    </tr>
+    <tr>
+      <td>可用的物理内存</td>
+      <td>6,964 MB</td>
+    </tr>
+    <tr>
+      <td>虚拟内存: 最大值</td>
+      <td>23,520 MB</td>
+    </tr>
+    <tr>
+      <td>虚拟内存: 可用</td>
+      <td>11,370 MB</td>
+    </tr>
+    <tr>
+      <td>虚拟内存: 使用中</td>
+      <td>12,150 MB</td>
+    </tr>
+    <tr>
+      <td>修补程序</td>
+      <td>安装了 4 个修补程序。<br />[01]: KB5012121<br />                [02]: KB5004567<br />[03]: KB5012592<br />[04]: KB5011650</td>
+    </tr>
+  </tbody>
+</table>
+
+<hr />
+
+<h3 id="ubuntu">Ubuntu</h3>
+
+<p><img src="https://s2.loli.net/2022/05/05/4IhxCv85iF97Tuk.png" alt="Linux 基本配置信息" /></p>
+
+<h2 id="wsl2-的安装和简单的配置">WSL2 的安装和简单的配置</h2>
+
+<p>首先在官方<sup id="fnref:1" role="doc-noteref"><a href="#fn:1" class="footnote" rel="footnote">1</a></sup>已经有十分详细的介绍了，请确保您的机器满足要求</p>
+
+<p>不过在这里我还是简单的叙述一下。</p>
+
+<h3 id="安装系统">安装系统</h3>
+
+<p>首先需要使用管理员权限打开 powershell 。按<code class="language-plaintext highlighter-rouge">win+x</code> 或者在win菜单上按右键。就可以看到这个选项。</p>
+
+<p>然后在终端上依照下面输入对应的代码即可。</p>
+
+<h4 id="一次都没装过">一次都没装过</h4>
+
+<p>如果你之前一次都没有安装的话那么执行下面的语句就可以安装一个 linux 了</p>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># powershell</span><span class="w">
+</span><span class="n">wsl</span><span class="w"> </span><span class="nt">--install</span><span class="w">
+</span></code></pre></div></div>
+
+<blockquote>
+  <p>默认安装为 Ubunutu 版本的linux</p>
+</blockquote>
+
+<p>❗ 如果您之前有安装过wsl，即使卸载掉的话，那么这条命令将不会生效。</p>
+
+<h4 id="通用的装法">通用的装法</h4>
+
+<p>如果上一个步骤无效的话 或者直接按照下面的步骤安装</p>
+
+<p>命令需要变成下面的格式</p>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># powershell</span><span class="w">
+</span><span class="n">wsl</span><span class="w"> </span><span class="nt">--install</span><span class="w"> </span><span class="nt">-d</span><span class="w"> </span><span class="err">&lt;</span><span class="nx">Distribution</span><span class="w"> </span><span class="nx">Name</span><span class="err">&gt;</span><span class="w">
+</span></code></pre></div></div>
+
+<p>其中 <code class="language-plaintext highlighter-rouge">-d</code> 表示指定需要的发行版本</p>
+
+<p><code class="language-plaintext highlighter-rouge">&lt;Distribution Name&gt;</code> 表示的发行版本的具体名称。</p>
+
+<p>获得 <code class="language-plaintext highlighter-rouge">&lt;Distribution Name&gt;</code> 可以下面的通过命令获得。</p>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#powershell</span><span class="w">
+</span><span class="n">wsl</span><span class="w"> </span><span class="nt">--list</span><span class="w"> </span><span class="nt">--online</span><span class="w">
+</span><span class="c"># wsl -l -o # 等同上句</span><span class="w">
+</span></code></pre></div></div>
+
+<p>执行之后我们得到一个列表。</p>
+
+<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>以下是可安装的有效分发的列表。
+请使用“wsl --install -d &lt;分发&gt;”安装。
+
+NAME            FRIENDLY NAME
+Ubuntu          Ubuntu
+Debian          Debian GNU/Linux
+kali-linux      Kali Linux Rolling
+openSUSE-42     openSUSE Leap 42
+SLES-12         SUSE Linux Enterprise Server v12
+Ubuntu-16.04    Ubuntu 16.04 LTS
+Ubuntu-18.04    Ubuntu 18.04 LTS
+Ubuntu-20.04    Ubuntu 20.04 LTS
+</code></pre></div></div>
+
+<p>至于何种版本请自行选择</p>
+
+<p>个人采用的是 <code class="language-plaintext highlighter-rouge">wsl --install -d Ubuntu</code></p>
+
+<p>我们输入完上面的信息之后，等待安装完成。</p>
+
+<p>之后会要求我们重启电脑。</p>
+
+<p><img src="https://s2.loli.net/2022/05/02/Gzs36a58mSH2uZp.png" alt="安装" /></p>
+
+<h3 id="可能出现的问题">可能出现的问题</h3>
+
+<p>如果你的电脑出现了这样的问题</p>
+
+<p><img src="https://s2.loli.net/2022/05/02/sXcBngiJtIkj2oy.png" alt="wsl" /></p>
+
+<p>在图片中的链接中就有相关的解决办法<sup id="fnref:2" role="doc-noteref"><a href="#fn:2" class="footnote" rel="footnote">2</a></sup></p>
+
+<p>下载并安装内核更新包即可。</p>
+
+<h3 id="初始化系统">初始化系统</h3>
+
+<p><img src="https://s2.loli.net/2022/05/02/NAwLIx5KykShF2Z.png" alt="success" /></p>
+
+<p>这是你的的用户名。</p>
+
+<p>❗注意开头字母不可以用大写字母</p>
+
+<p>然后输入你的密码即可。</p>
+
+<p><img src="https://s2.loli.net/2022/05/02/5GyZ2Vzq7gLlnPE.png" alt="成功" /></p>
+
+<p>如果到这个界面就说明成功了。</p>
+
+<p>如果官方的apt源更新过慢的话可以尝试下面的方法进行更换源。</p>
+
+<h4 id="更换国内源">更换国内源</h4>
+
+<p>这里采用清华大学的源请按照镜像站点的帮助指南进行配置<sup id="fnref:3" role="doc-noteref"><a href="#fn:3" class="footnote" rel="footnote">3</a></sup></p>
+
+<h5 id="查看linux发行版本">查看Linux发行版本</h5>
+
+<p>首先查看自己的版本信息</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># lsb_release -a</span>
+No LSB modules are available.
+Distributor ID: Ubuntu
+Description:    Ubuntu 20.04 LTS
+Release:        20.04
+Codename:       focal
+</code></pre></div></div>
+
+<p>可以看到我的版本是 <code class="language-plaintext highlighter-rouge">Ubuntu 20.04 LTS</code></p>
+
+<p>那么依照清华大学镜像站点中的信息进行编辑。</p>
+
+<h5 id="创建源文件">创建源文件</h5>
+
+<p>首先我们在 windows 的桌面新建一个文件 <code class="language-plaintext highlighter-rouge">sources.list.txt</code></p>
+
+<p><img src="https://s2.loli.net/2022/05/02/4nzVPqoO93wvXZ6.png" alt="sources.list.txt" /></p>
+
+<p>然后把清华大学镜像apt代码复制进去</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 默认注释了源码镜像以提高 apt update 速度，如有需要可自行取消注释</span>
+deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ focal main restricted universe multiverse
+<span class="c"># deb-src https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ focal main restricted universe multiverse</span>
+deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ focal-updates main restricted universe multiverse
+<span class="c"># deb-src https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ focal-updates main restricted universe multiverse</span>
+deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ focal-backports main restricted universe multiverse
+<span class="c"># deb-src https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ focal-backports main restricted universe multiverse</span>
+deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ focal-security main restricted universe multiverse
+<span class="c"># deb-src https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ focal-security main restricted universe multiverse</span>
+
+<span class="c"># 预发布软件源，不建议启用</span>
+<span class="c"># deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ focal-proposed main restricted universe multiverse</span>
+<span class="c"># deb-src https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ focal-proposed main restricted universe multiverse</span>
+</code></pre></div></div>
+
+<h5 id="备份">备份</h5>
+
+<p>执行下面的代码将ubuntu官方的源进行备份，方便改回来。</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#bash </span>
+<span class="nb">cd</span> /etc/apt/
+<span class="nb">sudo cp </span>sources.list sources.list.bak
+</code></pre></div></div>
+
+<h5 id="覆盖">覆盖</h5>
+
+<p>然后我们将我们windows桌面的<code class="language-plaintext highlighter-rouge">sources.list.txt</code>拷贝过来。</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#bash</span>
+<span class="nb">sudo cp</span> /mnt/c/Users/RKnFish/Desktop/sources.list.txt /etc/apt/sources.list
+<span class="c"># ~~~~~~~~~~~~~~~~~~~~~^ 请填上你自己的 windwos 用户名</span>
+</code></pre></div></div>
+
+<p>然后查看是否成功了。</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#bash </span>
+<span class="nb">cat</span> /etc/apt/sources.list
+</code></pre></div></div>
+
+<p>如果和清华镜像站点中的代码一致就说明可以了。</p>
+
+<h5 id="执行">执行</h5>
+
+<p>最后执行</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># bash</span>
+<span class="nb">sudo </span>apt-get update <span class="c"># 更新源</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>如果出现下面的问题[^f1]
+[^f1]: Linux apt 证书过期 <a href="https://www.zhangbj.com/p/1023.html">https://www.zhangbj.com/p/1023.html</a></p>
+
+  <div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Ign:1 https://mirrors.tuna.tsinghua.edu.cn/ubuntu focal InRelease
+Ign:2 https://mirrors.tuna.tsinghua.edu.cn/ubuntu focal-updates InRelease
+Ign:3 https://mirrors.tuna.tsinghua.edu.cn/ubuntu focal-backports InRelease
+Ign:4 https://mirrors.tuna.tsinghua.edu.cn/ubuntu focal-security InRelease
+Err:5 https://mirrors.tuna.tsinghua.edu.cn/ubuntu focal Release
+  Certificate verification failed: The certificate is NOT trusted. The certificate chain uses expired certificate.  Could not handshake: Error in the certificate verification. [IP: 101.6.15.130 443]
+Err:6 https://mirrors.tuna.tsinghua.edu.cn/ubuntu focal-updates Release
+  Certificate verification failed: The certificate is NOT trusted. The certificate chain uses expired certificate.  Could not handshake: Error in the certificate verification. [IP: 101.6.15.130 443]
+Err:7 https://mirrors.tuna.tsinghua.edu.cn/ubuntu focal-backports Release
+  Certificate verification failed: The certificate is NOT trusted. The certificate chain uses expired certificate.  Could not handshake: Error in the certificate verification. [IP: 101.6.15.130 443]
+Err:8 https://mirrors.tuna.tsinghua.edu.cn/ubuntu focal-security Release
+  Certificate verification failed: The certificate is NOT trusted. The certificate chain uses expired certificate.  Could not handshake: Error in the certificate verification. [IP: 101.6.15.130 443]
+Reading package lists... Done
+E: The repository 'https://mirrors.tuna.tsinghua.edu.cn/ubuntu focal Release' does not have a Release file.
+N: Updating from such a repository can't be done securely, and is therefore disabled by default.
+N: See apt-secure(8) manpage for repository creation and user configuration details.
+E: The repository 'https://mirrors.tuna.tsinghua.edu.cn/ubuntu focal-updates Release' does not have a Release file.
+N: Updating from such a repository can't be done securely, and is therefore disabled by default.
+N: See apt-secure(8) manpage for repository creation and user configuration details.
+E: The repository 'https://mirrors.tuna.tsinghua.edu.cn/ubuntu focal-backports Release' does not have a Release file.
+N: Updating from such a repository can't be done securely, and is therefore disabled by default.
+N: See apt-secure(8) manpage for repository creation and user configuration details.
+E: The repository 'https://mirrors.tuna.tsinghua.edu.cn/ubuntu focal-security Release' does not have a Release file.
+N: Updating from such a repository can't be done securely, and is therefore disabled by default.
+N: See apt-secure(8) manpage for repository creation and user configuration details.
+</code></pre></div>  </div>
+
+  <p>这是因为出现了证书的问题。</p>
+
+  <p>这是因为 apt 源默认是 http 的。</p>
+
+  <p>执行下面的步骤即可。</p>
+
+  <ol>
+    <li>
+      <p>将所有的<code class="language-plaintext highlighter-rouge">https</code>修改为 <code class="language-plaintext highlighter-rouge">http</code></p>
+
+      <p>然后执行 <code class="language-plaintext highlighter-rouge">sudo apt-get update</code></p>
+
+      <p>我们发现已经可以正常运行了。</p>
+    </li>
+    <li>
+      <p>安装证书</p>
+
+      <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>apt-get <span class="nb">install</span> <span class="nt">--reinstall</span> ca-certificates
+</code></pre></div>      </div>
+    </li>
+    <li>
+      <p>将<code class="language-plaintext highlighter-rouge">http</code>改回<code class="language-plaintext highlighter-rouge">https</code> 然后再次更新即可</p>
+    </li>
+  </ol>
+</blockquote>
+
+<p>执行下面的命令，更新软件</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>apt-get upgrade 
+</code></pre></div></div>
+
+<h3 id="简单的测试">简单的测试</h3>
+
+<hr />
+
+<h4 id="neovim-测试">neovim 测试</h4>
+
+<ul>
+  <li>前置软件 : git(默认已安装) , curl(默认已安装)</li>
+</ul>
+
+<p>我平时使用的<a href="/assets/others/init.vim">配置文件</a><sup id="fnref:my_nvim" role="doc-noteref"><a href="#fn:my_nvim" class="footnote" rel="footnote">4</a></sup>。</p>
+
+<p>&lt;/assets/others/init.vim&gt;</p>
+
+<h5 id="neovim-安装--vim-plug-安装">neovim 安装 + vim-plug 安装</h5>
+
+<p>执行<code class="language-plaintext highlighter-rouge">sudo apt-get install neovim</code>即可安装</p>
+
+<p>vim-plug 官方<sup id="fnref:vim_plug_offical" role="doc-noteref"><a href="#fn:vim_plug_offical" class="footnote" rel="footnote">5</a></sup></p>
+
+<p><a href="https://github.com/junegunn/vim-plug">https://github.com/junegunn/vim-plug</a></p>
+
+<p>官方给出的下载方式</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sh <span class="nt">-c</span> <span class="s1">'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
+       https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'</span>
+</code></pre></div></div>
+
+<p>不出意外会超时。</p>
+
+<p>两种解决办法。</p>
+
+<ol>
+  <li>代理上网</li>
+  <li>国内镜像</li>
+</ol>
+
+<p>第一种方式由于本校并不提供相关资源，个人也提供不了，因此采用第二种方案。</p>
+
+<p>好在国内gitee有镜像<sup id="fnref:gitee_mirror_vim_plug" role="doc-noteref"><a href="#fn:gitee_mirror_vim_plug" class="footnote" rel="footnote">6</a></sup>。</p>
+
+<p><a href="https://gitee.com/liufawei/vim-plug">https://gitee.com/liufawei/vim-plug</a></p>
+
+<p>我们点进去，找到我们相关的东西</p>
+
+<p><img src="https://s2.loli.net/2022/05/02/3blX65ONnac4RAd.png" alt="mirror-of-vim-plug" /></p>
+
+<p>我们点击原始数据，然后我们将其网址代替掉原本的内容即可。</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sh <span class="nt">-c</span> <span class="s1">'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
+       https://gitee.com/liufawei/vim-plug/raw/master/plug.vim'</span>
+</code></pre></div></div>
+
+<p>这个时候，我们就有了 vim-plug 了。</p>
+
+<p>neovim 的配置文件的目录是 <code class="language-plaintext highlighter-rouge">~/.config/nvim/init.vim</code></p>
+
+<p>所以我们需要创建，并将你(或者我的)配置放进去。</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">mkdir</span> ~/.config/nvim/ <span class="nt">-p</span>
+<span class="c"># mv /mnt/c/Users/RKnFish/Downloads/init.vim ~/.config/nvim/init.vim</span>
+<span class="c"># ~~~~~~~~~~~~~~~~~~^ 如果采用我的方案将此替换为你的 windows 用户名</span>
+</code></pre></div></div>
+
+<p>然后输入 nvim 并进入，如果出现错误，那是因为部分配置没有下载下来，所以无法加载。</p>
+
+<blockquote>
+  <p>如果出现了 <code class="language-plaintext highlighter-rouge">XXXX ^M</code> 类似的错误[^xxx^^M]，可以通过如下的命令行修正
+[^xxx^^M]: dos-&gt; unix <a href="https://www.computerhope.com/unix/dos2unix.htm">https://www.computerhope.com/unix/dos2unix.htm</a></p>
+
+  <p>这是因为 windows 的换行和 linux 的换行字符不一样。</p>
+
+  <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>apt-get <span class="nb">install </span>dos2unix
+dos2unix &lt;file&gt;
+</code></pre></div>  </div>
+</blockquote>
+
+<p>在普通模式输入 <code class="language-plaintext highlighter-rouge">:PlugInstall</code> 并回车</p>
+
+<p><img src="https://s2.loli.net/2022/05/02/UKOSGXELuYd1pfF.png" alt="PlugInstall" /></p>
+
+<p>如果没猜错的话，这一步依然举步维艰。</p>
+
+<p><img src="https://s2.loli.net/2022/05/02/q2CGmw9op1tyurz.png" alt="timeout" /></p>
+
+<p><a href="https://ghproxy.com/">https://ghproxy.com/</a> 随意寻找的github加速网址<sup id="fnref:git_hub_faster" role="doc-noteref"><a href="#fn:git_hub_faster" class="footnote" rel="footnote">7</a></sup></p>
+
+<p><a href="https://github.com/hunshcn/gh-proxy">https://github.com/hunshcn/gh-proxy</a> 也可以依照这个部署一下自己的加速站点<sup id="fnref:github_faster_orgion" role="doc-noteref"><a href="#fn:github_faster_orgion" class="footnote" rel="footnote">8</a></sup></p>
+
+<p>我们用第一个网址中给出的方法进行加速，也就是将所有的 plug 改成<code class="language-plaintext highlighter-rouge">https://ghproxy.com/https://github.com/XXX/xxx</code> 的形式</p>
+
+<p><img src="https://s2.loli.net/2022/05/02/MgZaREN2L3udpHe.png" alt="traing first" /></p>
+
+<p>比刚才好多了。</p>
+
+<p>不过我们再重复执行也无法安装上。因为我们再没有改变的时候就已经成功安装了，不过为了保持统一，我们需要先 <code class="language-plaintext highlighter-rouge">PlugClean</code> 。那么输入<code class="language-plaintext highlighter-rouge">:PlugClean</code> 再次重复上述步骤即可。</p>
+
+<p><img src="https://s2.loli.net/2022/05/02/2WYymsnLglVZSw9.png" alt="success-installed" /></p>
+
+<hr />
+
+<h4 id="gccg-测试">gcc/g++ 测试</h4>
+
+<p>gcc 就容易多了，因为不依赖外网。</p>
+
+<h5 id="安装">安装</h5>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>apt-get <span class="nb">install </span>gcc g++ 
+</code></pre></div></div>
+
+<h5 id="编译测试">编译测试</h5>
+
+<p>由于我在 vim 中的配置中设置了映射，可以bash中执行下述代码重现现场</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>g++ &lt;FILE&gt;.cpp <span class="nt">-o</span> &lt;FILE&gt; <span class="nt">-std</span><span class="o">=</span>c++17
+./&lt;FILE&gt; &lt; data.in <span class="o">&gt;</span> data.out
+<span class="nb">cat </span>data.out
+<span class="c"># &lt;FILE&gt; 为文件名，即为下图的 a.cpp 中的 a</span>
+</code></pre></div></div>
+
+<p>成功！🎉</p>
+
+<p><img src="https://s2.loli.net/2022/05/02/QYl2CWMjigXUFus.png" alt="edit-success" /></p>
+
+<h2 id="ssh-远程登录linux-主机">SSH 远程登录Linux 主机</h2>
+
+<p>相较于装系统远程登陆的任务似乎变得非常简单。</p>
+
+<p>下面将举两个例子。</p>
+
+<ul>
+  <li>在本机的电脑上ssh 到 wsl 上</li>
+  <li>在教学楼 ssh 到宿舍的电脑上</li>
+</ul>
+
+<hr />
+
+<h3 id="ssh-到-wsl">SSH 到 WSL</h3>
+
+<p>由于本人平时并不会连接到WSL上</p>
+
+<p>所以该部分的内容来自<sup id="fnref:remote_wsl" role="doc-noteref"><a href="#fn:remote_wsl" class="footnote" rel="footnote">9</a></sup></p>
+
+<p><a href="https://zhuanlan.zhihu.com/p/355748937">https://zhuanlan.zhihu.com/p/355748937</a></p>
+
+<h4 id="为wsl开启-ssh-server">为WSL开启 ssh server</h4>
+
+<p>将 WSL 的ssh server重新安装</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>apt remove openssh-server  <span class="c"># 卸载</span>
+apt <span class="nb">install </span>openssh-server <span class="c"># 重装</span>
+</code></pre></div></div>
+
+<h4 id="修改配置信息">修改配置信息</h4>
+
+<p>编辑 <code class="language-plaintext highlighter-rouge">/etc/ssh/sshd_config</code></p>
+
+<p>执行 <code class="language-plaintext highlighter-rouge">sudo nvim /etc/ssh/sshd_config</code></p>
+
+<p>有以下几项需要修改</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">Port 2222</code></li>
+  <li><code class="language-plaintext highlighter-rouge">PasswordAuthentication yes</code></li>
+  <li><code class="language-plaintext highlighter-rouge">ListenAddress 0.0.0.0</code></li>
+</ul>
+
+<p>只需要在 vim 的普通模式下先输入 <code class="language-plaintext highlighter-rouge">/</code> 然后输入需要匹配的单词就能定位到，记得把行前的 <code class="language-plaintext highlighter-rouge">#</code> 删去</p>
+
+<p><img src="https://s2.loli.net/2022/05/02/fEjUiCwqA5HW4nv.png" alt="Port 2222" /></p>
+
+<p><img src="https://s2.loli.net/2022/05/02/YcVslRoib5BA7Qh.png" alt="PasswordAuthentication" /></p>
+
+<p>然后输入 <code class="language-plaintext highlighter-rouge">:wq</code> 退出即可。</p>
+
+<p>重启 ssh 服务</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>service ssh restart
+</code></pre></div></div>
+
+<hr />
+
+<h4 id="本机连接">本机连接</h4>
+
+<p>在powershell 中输入</p>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">ssh</span><span class="w"> </span><span class="err">&lt;</span><span class="nx">yourwslusername</span><span class="err">&gt;@</span><span class="nx">127.0.0.1</span><span class="w"> </span><span class="nt">-p</span><span class="w"> </span><span class="nx">2222</span><span class="w">
+</span></code></pre></div></div>
+
+<p>然后就可以连接你的 wsl 中。</p>
+
+<blockquote>
+  <p>为了增加辨识度，我在 .bashrc 中的最后一行加入了命令 neofetch</p>
+</blockquote>
+
+<p><img src="https://s2.loli.net/2022/05/03/QoMqR6zvBix3frI.png" alt="ssh success" /></p>
+
+<p>又或者我们可以通过 wsl 的 ip 地址进行连接。</p>
+
+<p>先装 <code class="language-plaintext highlighter-rouge">net-tools</code></p>
+
+<p>然后再wsl 中输入</p>
+
+<p><img src="https://s2.loli.net/2022/05/02/aTtBnikIojWZvGR.png" alt="getip" /></p>
+
+<p>然后我们将 eth0 中的 inet第一串 ip 换掉原来的 <code class="language-plaintext highlighter-rouge">127.0.0.1</code> 即可。</p>
+
+<p>然后同上</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ssh &lt;yourwslusername&gt;@172.19.52.160 <span class="nt">-p</span> 2222
+</code></pre></div></div>
+
+<p><img src="https://s2.loli.net/2022/05/02/9f3YGD4WAVjPebk.png" alt="ssh success 2" /></p>
+
+<p>远程连接具体远程连接可以到上面的链接学习。</p>
+
+<h3 id="ssh-到宿舍的电脑上">SSH 到宿舍的电脑上</h3>
+
+<p>由于我的舍友有一台暂时不用的电脑，被我们拿来当作了一个简单的服务器，用来存放一些服务。</p>
+
+<p>和上面的操作基本一致</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>apt <span class="nb">install </span>openssh-server net-tools
+</code></pre></div></div>
+
+<p>然后输入 <code class="language-plaintext highlighter-rouge">ifconfig</code> 得到本机的 ip 地址。</p>
+
+<p>然后在powershell 输入 <code class="language-plaintext highlighter-rouge">ssh &lt;yourusername&gt;@&lt;youipaddr&gt;</code></p>
+
+<p>如果设置了不是 22 端口则需要加参数 <code class="language-plaintext highlighter-rouge">-p &lt;port&gt;</code></p>
+
+<p><img src="https://s2.loli.net/2022/05/02/siVTQ3nCfHZGpY4.png" alt="success" /></p>
+
+<p>另外手机上也是同样的。(软件为 <code class="language-plaintext highlighter-rouge">JuiceSSH</code><sup id="fnref:ssh_mobile" role="doc-noteref"><a href="#fn:ssh_mobile" class="footnote" rel="footnote">10</a></sup>)</p>
+
+<p>其他设备同理。</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>编辑界面</th>
+      <th>成功界面</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><img src="https://s2.loli.net/2022/05/02/riyUKmRul7JGkAc.png" alt="link" /></td>
+      <td><img src="https://s2.loli.net/2022/05/02/YLlZvxrVksJuicj.png" alt="suc" /></td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="总结">总结</h2>
+
+<ol>
+  <li>Linux 只需要按照官方执行步骤来即可。</li>
+  <li>远程连接不管用什么都需要 <code class="language-plaintext highlighter-rouge">ssh xxx@xxx:xxxx</code></li>
+  <li>利用搜索引擎找到解决办法</li>
+  <li>学会利用镜像 / 个人加速站点</li>
+</ol>
+<div class="footnotes" role="doc-endnotes">
+  <ol>
+    <li id="fn:1" role="doc-endnote">
+      <p>wsl2 安装官方文档 <a href="https://docs.microsoft.com/zh-cn/windows/wsl/install">https://docs.microsoft.com/zh-cn/windows/wsl/install</a> <a href="#fnref:1" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:2" role="doc-endnote">
+      <p>wsl 出现内核老旧的解决办法 <a href="https://aka.ms/wsl2kernel">https://aka.ms/wsl2kernel</a> <a href="#fnref:2" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:3" role="doc-endnote">
+      <p>清华大学镜像站 <a href="https://mirrors.tuna.tsinghua.edu.cn/help/ubuntu/">https://mirrors.tuna.tsinghua.edu.cn/help/ubuntu/</a> <a href="#fnref:3" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:my_nvim" role="doc-endnote">
+      <p>我的 neovim 配置 <a href="https://blog.ohtoai.fun/assets/others/init.vim">https://blog.ohtoai.fun/assets/others/init.vim</a> <a href="#fnref:my_nvim" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:vim_plug_offical" role="doc-endnote">
+      <p>vim-plug 官方<a href="https://github.com/junegunn/vim-plug">https://github.com/junegunn/vim-plug</a> <a href="#fnref:vim_plug_offical" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:gitee_mirror_vim_plug" role="doc-endnote">
+      <p>vim-plug 在 gitee 的镜像 <a href="https://gitee.com/liufawei/vim-plug">https://gitee.com/liufawei/vim-plug</a> <a href="#fnref:gitee_mirror_vim_plug" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:git_hub_faster" role="doc-endnote">
+      <p>github 加速 <a href="https://ghproxy.com/">https://ghproxy.com/</a> <a href="#fnref:git_hub_faster" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:github_faster_orgion" role="doc-endnote">
+      <p>可部署的 github 加速 <a href="https://github.com/hunshcn/gh-proxy">https://github.com/hunshcn/gh-proxy</a> <a href="#fnref:github_faster_orgion" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:remote_wsl" role="doc-endnote">
+      <p>远程连接 wsl 教程原地址 <a href="https://zhuanlan.zhihu.com/p/355748937">https://zhuanlan.zhihu.com/p/355748937</a> <a href="#fnref:remote_wsl" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:ssh_mobile" role="doc-endnote">
+      <p>手机上的 SSH 软件 <a href="https://juicessh.com/">https://juicessh.com/</a> <a href="#fnref:ssh_mobile" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+  </ol>
+</div>
+</div><div class="d-print-none"><footer class="article__footer"><!-- start custom article footer snippet -->
+
+<!-- end custom article footer snippet -->
+</footer>
+</div>
+
+</div>
+
+<script src="/assets/scripts/article.js">
+</script>
+
+
+<div class="post-categories">
+  
+  
+</div><div id="totop"
+   style="position: fixed; bottom: 90px; right: 40px; opacity: 0;background: url(/assets/images/topbutton.png) no-repeat center center;">
+   <a id="totop_a" title="Back To Top" style="width:64px; height:64px;display: block;"></a>
+</div>
+</div><section class="page__comments d-print-none"></section></article><!-- start custom main bottom snippet -->
+
+<!-- end custom main bottom snippet -->
+</div>
+            </div></div></div><div class="page__footer d-print-none">
+<footer class="footer py-4 js-page-footer">
+  <div class="main"><div itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="phrk"><meta itemprop="url" content="https://blog.ohtoai.fun/about/"><!-- Success is not final, failure is not fatal: it is the courage to continue that counts. -->
+        <meta itemprop="description" content="Success is not final, failure is not fatal: it is the courage to continue that counts."><div class="footer__author-links"><div class="author-links">
+  <ul class="menu menu--nowrap menu--inline"><link itemprop="url" href="https://blog.ohtoai.fun/about/"><li title="Send me an Email.">
+      <a class="button button--circle mail-button" itemprop="email" href="mailto:phrknfish@outlook.com" target="_blank">
+        <i class="fas fa-envelope"></i>
+      </a><li title="Follow me on Github.">
+        <a class="button button--circle github-button" itemprop="sameAs" href="https://github.com/Real-king-Ph" target="_blank">
+          <div class="icon"><svg fill="#000000" width="24px" height="24px" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
+  <path class="svgpath" data-index="path_0" fill="#272636" d="M0 525.2c0 223.6 143.3 413.7 343 483.5 26.9 6.8 22.8-12.4 22.8-25.4l0-88.7c-155.3 18.2-161.5-84.6-172-101.7-21.1-36-70.8-45.2-56-62.3 35.4-18.2 71.4 4.6 113.1 66.3 30.2 44.7 89.1 37.2 119 29.7 6.5-26.9 20.5-50.9 39.7-69.6C248.8 728.2 181.7 630 181.7 513.2c0-56.6 18.7-108.7 55.3-150.7-23.3-69.3 2.2-128.5 5.6-137.3 66.5-6 135.5 47.6 140.9 51.8 37.8-10.2 80.9-15.6 129.1-15.6 48.5 0 91.8 5.6 129.8 15.9 12.9-9.8 77-55.8 138.8-50.2 3.3 8.8 28.2 66.7 6.3 135 37.1 42.1 56 94.6 56 151.4 0 117-67.5 215.3-228.8 243.7 26.9 26.6 43.6 63.4 43.6 104.2l0 128.8c0.9 10.3 0 20.5 17.2 20.5C878.1 942.4 1024 750.9 1024 525.3c0-282.9-229.3-512-512-512C229.1 13.2 0 242.3 0 525.2L0 525.2z" />
+</svg>
+</div>
+        </a>
+      </li></ul>
+</div>
+</div>
+    </div><div class="site-info mt-2">
+      <div>© RK's blog 2022-2023,
+        Powered by <a title="Jekyll is a simple, blog-aware, static site generator." href="http://jekyllrb.com/">Jekyll</a> & <a
+        title="TeXt is a super customizable Jekyll theme." href="https://github.com/kitian616/jekyll-TeXt-theme">TeXt Theme</a>.
+      </div>
+      <p id="hitokoto">:D loading...</p>
+      <script src="https://v1.hitokoto.cn/?encode=js&select=%23hitokoto" defer></script>
+    </div>
+  </div>
+</footer>
+</div></div>
+    </div><script src="/assets/scripts/lib/modal.js"></script><div class="modal modal--overflow page__search-modal d-print-none js-page-search-modal"></div></div>
+
+
+<script src="/assets/scripts/lib/scroll-to.js"></script>
+<script src="/assets/scripts/lib/affix.js"></script>
+<script src="/assets/scripts/lib/toc.js"></script><script src="/assets/scripts/page.js"></script><script>
+   MathJax = {
+      tex: {
+         inlineMath: [['$', '$'], ['\\(', '\\)']]
+      },
+   };
+</script>
+<script type="text/javascript"  id="MathJax-script" src="https://cdn.bootcdn.net/ajax/libs/mathjax/3.2.0/es5/tex-chtml.js" async></script>
+
+    </div>
+    <script src="/assets/scripts/common.js"></script>
+  </body>
+</html>
+

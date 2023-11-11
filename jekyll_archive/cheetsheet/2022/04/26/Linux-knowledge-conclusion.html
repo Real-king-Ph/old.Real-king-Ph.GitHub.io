@@ -1,0 +1,499 @@
+<!DOCTYPE html><html lang="en">
+  <head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"><title>Linux 小结 - RK's blog</title>
+
+<meta name="description" content="content : 仅展示考试相关的内容target  : examedit    :  - version : 'v1.0'    edittime: 2022-04-26    message : 新增 文件系统 | 常用命令文件系统Linux 系统目录/ 根目录/                      ...">
+<link rel="canonical" href="https://blog.ohtoai.fun/cheetsheet/2022/04/26/Linux-knowledge-conclusion.html"><link rel="alternate" type="application/rss+xml" title="RK's blog" href="/feed.xml"><!-- start favicons snippet, use https://realfavicongenerator.net/ --><link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png"><link rel="manifest" href="/assets/site.webmanifest"><link rel="mask-icon" href="/assets/safari-pinned-tab.svg" color="#fc4d50"><link rel="shortcut icon" href="/assets/favicon.ico">
+
+<meta name="msapplication-TileColor" content="#ffc40d"><meta name="msapplication-config" content="/assets/browserconfig.xml">
+
+<meta name="theme-color" content="#ffffff">
+<!-- end favicons snippet --><link rel="stylesheet" href="/assets/css/main.css"><link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.2/css/all.min.css" ><!-- start custom head snippets -->
+<link href='//cdn.jsdelivr.net/npm/@waline/client/dist/waline.css' rel='stylesheet' />
+<!-- end custom head snippets -->
+<script src="/assets/scripts/utils/utils.js"></script>
+    <script src = "/assets/scripts/lib/throttle.js"></script>
+    <script src = "/assets/scripts/lib/lazyload.js"></script>
+
+    <!-- ms clarity --><script>
+  (function() {
+    var TEXT_VARIABLES = {
+      version: '2.2.6',
+      sources: {
+        font_awesome: 'https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.2/css/all.min.css',
+        jquery: 'https://cdn.bootcdn.net/ajax/libs/jquery/3.1.1/jquery.min.js',
+        leancloud_js_sdk: '//cdn.jsdelivr.net/npm/leancloud-storage@3.13.2/dist/av-min.js',
+        chart: 'https://cdn.bootcdn.net/ajax/libs/Chart.js/4.4.0/chart.umd.min.js',
+        gitalk: {
+          js: 'https://cdn.bootcdn.net/ajax/libs/gitalk/1.2.2/gitalk.min.js',
+          css: 'https://cdn.bootcdn.net/ajax/libs/gitalk/1.2.2/gitalk.min.css'
+        },
+        valine: 'https://unpkg.com/valine/dist/Valine.min.js',
+        waline: 'https://cdn.jsdelivr.net/npm/@waline/client/dist/waline.js',
+        mathjax: 'https://cdn.bootcdn.net/ajax/libs/mathjax/3.2.0/es5/tex-chtml.js',
+        mermaid: 'https://cdn.bootcdn.net/ajax/libs/mermaid/10.4.0/mermaid.min.js'
+      },
+      site: {
+        toc: {
+          selectors: 'h2,h3,h4'
+        }
+      },
+      paths: {
+        search_js: '/assets/search.js'
+      }
+    };
+    window.TEXT_VARIABLES = TEXT_VARIABLES;
+  })();
+</script>
+</head>
+  <body>
+    <div class="root" data-is-touch="false">
+      <div class="layout--page js-page-root"><div class="page__main js-page-main page__viewport has-aside cell cell--auto">
+
+      <div class="page__main-inner"><div class="page__header d-print-none"><header class="header"><div class="main">
+      <div class="header__title">
+        <div class="header__brand"><svg width="64px" height="64px" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><title>love-france-heart-ico</title><g id="love-france-heart-ico"><circle cx="34" cy="35" r="23" style="fill:#e5efef"/><path d="M22.973,8.665a6.775,6.775,0,0,0-4.764,2.005,6.777,6.777,0,0,0-4.765-2.005c-3.947,0-7.147,3.5-7.147,7.826s8.338,11.738,11.912,14.347C21.782,28.229,30.12,20.813,30.12,16.491S26.92,8.665,22.973,8.665Z" style="fill:#f53e28;stroke:#4c241d;stroke-linecap:round;stroke-linejoin:round;stroke-width:2px"/><path d="M49.973,35.665a6.775,6.775,0,0,0-4.764,2.005,6.777,6.777,0,0,0-4.765-2.005c-3.947,0-7.147,3.5-7.147,7.826s8.338,11.738,11.912,14.347C48.782,55.229,57.12,47.813,57.12,43.491S53.92,35.665,49.973,35.665Z" style="fill:#fff;stroke:#4c241d;stroke-linecap:round;stroke-linejoin:round;stroke-width:2px"/><line x1="26" y1="35" x2="26" y2="37" style="fill:none;stroke:#4c241d;stroke-linecap:round;stroke-linejoin:round;stroke-width:2px"/><line x1="26" y1="41" x2="26" y2="43" style="fill:none;stroke:#4c241d;stroke-linecap:round;stroke-linejoin:round;stroke-width:2px"/><line x1="22" y1="39" x2="24" y2="39" style="fill:none;stroke:#4c241d;stroke-linecap:round;stroke-linejoin:round;stroke-width:2px"/><line x1="28" y1="39" x2="30" y2="39" style="fill:none;stroke:#4c241d;stroke-linecap:round;stroke-linejoin:round;stroke-width:2px"/><circle cx="37.5" cy="7.5" r="2.5" style="fill:none;stroke:#4c241d;stroke-linecap:round;stroke-linejoin:round;stroke-width:2px"/><circle cx="4.5" cy="59.5" r="2.5" style="fill:none;stroke:#4c241d;stroke-linecap:round;stroke-linejoin:round;stroke-width:2px"/><path d="M32.651,29.1a1.069,1.069,0,1,1-1.069-1.069A1.069,1.069,0,0,1,32.651,29.1Z" style="fill:#4c241d"/><path d="M59.651,27.1a1.069,1.069,0,1,1-1.069-1.069A1.069,1.069,0,0,1,59.651,27.1Z" style="fill:#4c241d"/><path d="M6.651,4.1A1.069,1.069,0,1,1,5.582,3.029,1.069,1.069,0,0,1,6.651,4.1Z" style="fill:#4c241d"/><path d="M58.651,58.1a1.069,1.069,0,1,1-1.069-1.069A1.069,1.069,0,0,1,58.651,58.1Z" style="fill:#4c241d"/><path d="M5.651,32.1a1.069,1.069,0,1,1-1.069-1.069A1.069,1.069,0,0,1,5.651,32.1Z" style="fill:#4c241d"/><path d="M46.04,18.49a2.605,2.605,0,0,0-1.831.77,2.609,2.609,0,0,0-1.832-.77A2.887,2.887,0,0,0,39.63,21.5c0,1.661,3.2,4.512,4.579,5.515,1.373-1,4.578-3.854,4.578-5.515A2.887,2.887,0,0,0,46.04,18.49Z" style="fill:#9dc1e4;stroke:#4c241d;stroke-linecap:round;stroke-linejoin:round;stroke-width:2px"/><path d="M57.04,4.49a2.605,2.605,0,0,0-1.831.77,2.609,2.609,0,0,0-1.832-.77A2.887,2.887,0,0,0,50.63,7.5c0,1.661,3.2,4.512,4.579,5.515,1.373-1,4.578-3.854,4.578-5.515A2.887,2.887,0,0,0,57.04,4.49Z" style="fill:#fff;stroke:#4c241d;stroke-linecap:round;stroke-linejoin:round;stroke-width:2px"/><path d="M14.04,39.49a2.605,2.605,0,0,0-1.831.77,2.609,2.609,0,0,0-1.832-.77A2.887,2.887,0,0,0,7.63,42.5c0,1.661,3.205,4.512,4.579,5.515,1.373-1,4.578-3.854,4.578-5.515A2.887,2.887,0,0,0,14.04,39.49Z" style="fill:#9dc1e4;stroke:#4c241d;stroke-linecap:round;stroke-linejoin:round;stroke-width:2px"/><path d="M27.04,51.49a2.605,2.605,0,0,0-1.831.77,2.609,2.609,0,0,0-1.832-.77A2.887,2.887,0,0,0,20.63,54.5c0,1.661,3.205,4.512,4.579,5.515,1.373-1,4.578-3.854,4.578-5.515A2.887,2.887,0,0,0,27.04,51.49Z" style="fill:#f53e28;stroke:#4c241d;stroke-linecap:round;stroke-linejoin:round;stroke-width:2px"/></g></svg><a title="不知名211大三在读
+" href="/">RK's blog</a></div>
+      </div><nav class="navigation">
+        <ul><li class="navigation__item"><a href="/archive/">Archive</a></li><li class="navigation__item"><a href="/about/">About</a></li><li class="navigation__item"><a href="/Friend-Link-House/">Links</a></li><li class="navigation__item"><a href="https://blogroll.rklittle.workers.dev/">blogroll</a></li></ul>
+      </nav></div>
+  </header>
+</div><div class="page__content"><div class ="main"><div class="grid grid--reverse">
+
+              <div class="col-aside d-print-none js-col-aside"><aside class="page__aside js-page-aside"><div class="toc-aside js-toc-root"></div>
+</aside></div>
+
+              <div class="col-main cell cell--auto"><!-- start custom main top snippet -->
+
+<!-- end custom main top snippet -->
+<article itemscope itemtype="http://schema.org/Article"><div class="article__header"><header><h1>Linux 小结</h1></header><span class="split-space">&nbsp;</span>
+          <a class="edit-on-github"
+            title="Edit on Github"
+            href="https://github.com/Real-king-Ph/Real-king-Ph.GitHub.io/tree/master/_posts/2022-04-06M/2022-04-26-Linux-knowledge-conclusion.md">
+            <i class="far fa-edit"></i></a></div><meta itemprop="headline" content="Linux 小结"><div class="article__info clearfix"><ul class="left-col menu"><li>
+              <a class="button button--secondary button--pill button--sm"
+                href="/archive/?tag=Linux">Linux</a>
+            </li></ul><ul class="right-col menu"><li><i class="far fa-calendar-alt"></i> <span>Apr 26, 2022</span>
+            </li><li><i class="fa-solid fa-eye"></i> <span class="waline-pageview-count" data-path="/cheetsheet/2022/04/26/Linux-knowledge-conclusion.html">0</span> views</li></ul></div><meta itemprop="author" content="phrk"/><meta itemprop="datePublished" content="2022-04-26T00:00:00+00:00">
+    <meta itemprop="keywords" content="Linux"><div class="js-article-content"><div class="layout--article"><!-- start custom article top snippet -->
+
+<!-- end custom article top snippet -->
+<div class="article__content" itemprop="articleBody"><div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">content </span><span class="pi">:</span> <span class="s">仅展示考试相关的内容</span>
+<span class="na">target  </span><span class="pi">:</span> <span class="s">exam</span>
+<span class="na">edit    </span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">version </span><span class="pi">:</span> <span class="s1">'</span><span class="s">v1.0'</span>
+    <span class="na">edittime</span><span class="pi">:</span> <span class="s">2022-04-26</span>
+    <span class="na">message </span><span class="pi">:</span> <span class="s">新增 文件系统 | 常用命令</span>
+</code></pre></div></div>
+
+<h2 id="文件系统">文件系统</h2>
+
+<h3 id="linux-系统目录">Linux 系统目录</h3>
+
+<h4 id="-根目录">/ 根目录</h4>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/                        *# 根目录，所有文件的起点
+├── bin -&gt; usr/bin       *# 二进制文件，存放最常用的命令
+├── boot                 *# 启动 Linux 的核心文件，包括一些连接文件以及镜像文件
+├── dev                  *# 设备，存放 Linux 的外部文件
+├── etc                  *# 存放管理系统的配置文件和子目录
+├── home                 *# 用户家目录
+├── lib -&gt; usr/lib       *# 系统的共享库
+├── lib32 -&gt; usr/lib32    # ↑
+├── lib64 -&gt; usr/lib64    # ↑
+├── libx32 -&gt; usr/libx32  # ↑
+├── lost+found            # 存放非法关机后时的重要文件
+├── media                 # 存储媒体，U 盘等
+├── mnt                   # 临时挂在的文件系统，例如/mnt/c 表示win 的 C 盘
+├── opt                   # 一般用于安装额外的软件，例如 MySQL
+├── proc                  # 伪文件目录，内存中的进程
+├── root                 *# 超级管理员的家目录
+├── run                   # 临时文件，存储从开机以来的信息
+├── sbin -&gt; usr/sbin      # 超级用户的二进制文件
+├── snap                  # (Ubuntu 中的一个包管理)
+├── srv                   # 该目录存放一些服务启动之后需要提取的数据。
+├── sys                   # 三种文件系统会放在这里
+├── tmp                  *# 临时文件
+├── usr                  *# Unix System Resource 的缩写，存放同 / 的一些资源
+└── var                   # 一般用与存放经常变化的文件，比如log
+</code></pre></div></div>
+
+<h4 id="etc">/etc</h4>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/etc
+├── issue   # 登陆时的提示信息
+├── passwd  # 存储系统中所有的用户信息
+├── shadow  # 存储用户密码
+└── ...
+</code></pre></div></div>
+
+<h4 id="usr">/usr</h4>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/usr
+├── bin
+├── games
+├── include
+├── lib
+├── lib32
+├── lib64
+├── libexec
+├── libx32
+├── local
+├── sbin
+├── share
+└── src   # 源码
+</code></pre></div></div>
+
+<h3 id="文件和目录命名">文件和目录命名</h3>
+
+<ul>
+  <li>名字长度
+    <ul>
+      <li>[1 ~ 256] 个字符</li>
+    </ul>
+  </li>
+  <li>合法字符
+    <ul>
+      <li>文件名的合法字符有
+        <ul>
+          <li>字母</li>
+          <li>数字</li>
+          <li>.</li>
+          <li>_ &lt;– 下划线</li>
+          <li>- &lt;– 横杠</li>
+        </ul>
+      </li>
+      <li>有转义的符号(尽量不要使用)
+        <ul>
+          <li>?</li>
+          <li>*</li>
+          <li>空格</li>
+          <li>$</li>
+          <li>&amp;</li>
+          <li>括号</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><code class="language-plaintext info highlighter-rouge">区分大小写</code></p>
+
+<h3 id="通配符">通配符</h3>
+
+<ul>
+  <li>* 匹配任意长度的字符串</li>
+  <li>. 作为文件名的时候必须显示的匹配</li>
+  <li>\ 转义符，用来转义特殊字符</li>
+  <li>? 匹配任一单一字符</li>
+  <li>匹配括号内的任一字符，可以用范围表示 ，例如
+    <ul>
+      <li>[A-Za-z] 可以匹配A-Z 和 a-z 中的字符</li>
+      <li>[Mm] 匹配 M 或者 m</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="文件类型">文件类型</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>文件类型</th>
+      <th>符号</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>普通文件</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td>目录文件</td>
+      <td>d</td>
+    </tr>
+    <tr>
+      <td>符号链接文件</td>
+      <td>l</td>
+    </tr>
+    <tr>
+      <td>字符设备</td>
+      <td>c</td>
+    </tr>
+    <tr>
+      <td>块设备文件</td>
+      <td>b</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="常用命令">常用命令</h2>
+
+<h3 id="pwd">pwd</h3>
+
+<p>显示当前的目录</p>
+
+<h3 id="cat">cat</h3>
+
+<ul>
+  <li>用法 <code class="language-plaintext highlighter-rouge">cat [选项] [文件]</code>
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">cat try.c</code> 显示 <code class="language-plaintext highlighter-rouge">try.c</code> 的内容</li>
+      <li><code class="language-plaintext highlighter-rouge">cat &gt; try.c</code> 在终端向 <code class="language-plaintext highlighter-rouge">try.c</code> 输入内容，<code class="language-plaintext highlighter-rouge">ctrl + D</code> 结束输入</li>
+      <li><code class="language-plaintext highlighter-rouge">cat file1 file2 ... </code> 依次打印这些文件</li>
+      <li><code class="language-plaintext highlighter-rouge">cat ... &gt; target.txt</code> 将屏幕上的信息输入到 <code class="language-plaintext highlighter-rouge">target.txt</code> 中</li>
+      <li><code class="language-plaintext highlighter-rouge">cat &gt; file1 &lt;&lt;EOF </code> 当输入 <code class="language-plaintext highlighter-rouge">EOF</code> 时结束输入</li>
+    </ul>
+  </li>
+  <li>参数
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">-n</code> 编号</li>
+      <li><code class="language-plaintext highlighter-rouge">-b</code> 空行不编号</li>
+      <li><code class="language-plaintext highlighter-rouge">-s</code> 压缩连续的空行</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="ls">ls</h3>
+
+<ul>
+  <li>用法 <code class="language-plaintext highlighter-rouge">ls [选项] [目录或者文件]</code></li>
+  <li>参数
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">-a</code> 所有文件</li>
+      <li><code class="language-plaintext highlighter-rouge">-l</code> 显示详细信息</li>
+      <li><code class="language-plaintext highlighter-rouge">-F</code> 显示文件类型
+        <ul>
+          <li><code class="language-plaintext highlighter-rouge">*</code> 可执行的普通文件</li>
+          <li><code class="language-plaintext highlighter-rouge">/</code> 目录</li>
+          <li><code class="language-plaintext highlighter-rouge">@</code> 符号链接</li>
+          <li><code class="language-plaintext highlighter-rouge">|</code> FIFOs</li>
+          <li><code class="language-plaintext highlighter-rouge">=</code> 套接字</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><code class="language-plaintext highlighter-rouge">-l</code> 参数</p>
+
+<p><img src="https://s2.loli.net/2022/04/26/p7vtdK2CYDOakEn.png" alt="image-20220426200713799" /></p>
+
+<h3 id="more">more</h3>
+
+<ul>
+  <li>用法 <code class="language-plaintext highlighter-rouge">more [选项] [文件]</code></li>
+  <li>参数
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">-num</code> 指定一次显示的行数</li>
+      <li><code class="language-plaintext highlighter-rouge">-d</code> 提示</li>
+      <li><code class="language-plaintext highlighter-rouge">+num</code> 从 <code class="language-plaintext highlighter-rouge">num</code>  行开始显示</li>
+      <li><code class="language-plaintext highlighter-rouge">+/[...]</code> 从 <code class="language-plaintext highlighter-rouge">...</code> 之后的内容开始</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="less">less</h3>
+
+<ul>
+  <li>参数
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">-a</code> 最后一页</li>
+      <li><code class="language-plaintext highlighter-rouge">-i</code> 搜索时忽略大小写</li>
+      <li><code class="language-plaintext highlighter-rouge">-m</code> 百分比</li>
+      <li><code class="language-plaintext highlighter-rouge">-M</code> 百分比 行数 总行数</li>
+      <li><code class="language-plaintext highlighter-rouge">-N</code> 行号</li>
+      <li><code class="language-plaintext highlighter-rouge">-s</code> 压缩多个空行</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="head--tail">head / tail</h3>
+
+<ul>
+  <li>参数
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">-number</code> 显示 <code class="language-plaintext highlighter-rouge">number</code> 行</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="cp">cp</h3>
+
+<ul>
+  <li>用法 <code class="language-plaintext highlighter-rouge">cp [选项] [原文件/目录] [目标文件目录]</code></li>
+  <li>参数
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">-a</code> 相当于 <code class="language-plaintext highlighter-rouge">-dpr</code></li>
+      <li><code class="language-plaintext highlighter-rouge">-d</code> 保留文件链接</li>
+      <li><code class="language-plaintext highlighter-rouge">-f</code> 强制执行，不提示</li>
+      <li><code class="language-plaintext highlighter-rouge">-i</code> 询问是否覆盖</li>
+      <li><code class="language-plaintext highlighter-rouge">-r</code> 递归的</li>
+      <li><code class="language-plaintext highlighter-rouge">-l</code> 不复制，创建硬链接</li>
+      <li><code class="language-plaintext highlighter-rouge">-s</code> 符号连接</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="mv--rm">mv / rm</h3>
+
+<p>同上</p>
+
+<h3 id="sort">sort</h3>
+
+<ul>
+  <li>用法 <code class="language-plaintext highlighter-rouge">sort [选项] file</code></li>
+  <li>参数
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">-n</code> 用整数作为比较</li>
+      <li><code class="language-plaintext highlighter-rouge">-o</code> 输出到指定的文件</li>
+      <li><code class="language-plaintext highlighter-rouge">-r</code> reverse 倒序</li>
+      <li><code class="language-plaintext highlighter-rouge">-t</code> 设置分隔符</li>
+      <li><code class="language-plaintext highlighter-rouge">-u</code> 唯一化</li>
+      <li><code class="language-plaintext highlighter-rouge">-b</code> 忽略空白</li>
+      <li><code class="language-plaintext highlighter-rouge">-g</code> 浮点数比较</li>
+      <li><code class="language-plaintext highlighter-rouge">-d</code> 字典序</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="uniq">uniq</h3>
+
+<ul>
+  <li>参数
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">-c</code> 次数</li>
+      <li><code class="language-plaintext highlighter-rouge">-d</code> 仅显示重复的行</li>
+      <li><code class="language-plaintext highlighter-rouge">-u</code> 仅显示不重复的行</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="wc">wc</h3>
+
+<p>统计行数(line) ，字节数(char)，字数(word)</p>
+
+<ul>
+  <li>参数
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">-c</code> 统计字节数</li>
+      <li><code class="language-plaintext highlighter-rouge">-l</code> 统计行数</li>
+      <li><code class="language-plaintext highlighter-rouge">-w</code> 统计字数</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="comm">comm</h3>
+
+<p>对排好序的文件比较</p>
+
+<h3 id="diff">diff</h3>
+
+<ul>
+  <li>参数
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">-b</code> 忽略行尾的空格</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="touch">touch</h3>
+
+<p>摸一下，跟新最后修改的时间。</p>
+
+<p>创建新文件</p>
+
+<p class="info">该权限的默认为 <code class="language-plaintext highlighter-rouge">-rw-r--r--</code></p>
+
+<h3 id="ln">ln</h3>
+
+<p><code class="language-plaintext highlighter-rouge">ln</code> 硬链接</p>
+
+<p><code class="language-plaintext highlighter-rouge">ln -s</code> 符号链接，软连接</p>
+
+<h3 id="find">find</h3>
+
+<p><a href="https://www.jianshu.com/p/ea8cc2248022">Linux find 命令详解 - 简书 (jianshu.com)</a></p>
+
+</div><section class="article__sharing d-print-none"><!-- AddToAny BEGIN -->
+<div class="a2a_kit a2a_kit_size_32 a2a_default_style">
+   <a class="a2a_dd" href="https://www.addtoany.com/share"></a>
+   <a class="a2a_button_wechat"></a>
+   <a class="a2a_button_copy_link"></a>
+   <a class="a2a_button_twitter"></a>
+   <a class="a2a_button_email"></a>
+</div>
+<script async src="https://static.addtoany.com/menu/page.js"></script>
+<!-- AddToAny END -->
+</section><div class="d-print-none"><footer class="article__footer"><meta itemprop="dateModified" content="2022-04-26T00:00:00+00:00"><!-- start custom article footer snippet -->
+
+<!-- end custom article footer snippet -->
+<div class="article__subscribe"><div class="subscribe"><i class="fas fa-rss"></i> <a type="application/rss+xml" href="/feed.xml">Subscribe</a></div>
+</div><div class="article__license"><div class="license">
+    <p>This work is licensed under <a itemprop="license" rel="license" href="https://github.com/Real-king-Ph/Real-king-Ph.GitHub.io/blob/master/LICENSE">The MIT License</a> license.
+    </p>
+  </div></div></footer>
+<div class="article__section-navigator clearfix"><div class="previous"><span>PREVIOUS</span><a href="/2022/04/15/vscode-oracle%E7%AE%80%E6%98%93%E4%BD%BF%E7%94%A8%E6%95%B0%E6%8D%AE%E5%BA%93.html">vscode + oracle 简易使用数据库</a></div><div class="next"><span>NEXT</span><a href="/cheetsheet/2022/04/27/ji-suan-ji-zu-cheng-yuan-li.html">计算机组成原理 简易整理</a></div></div></div>
+
+</div>
+
+<script src="/assets/scripts/article.js">
+</script>
+
+
+<div class="post-categories">
+  
+  
+  <a class="button button--outline-secondary button--pill"
+    href="/categories/cheetsheet">cheetsheet</a>
+  
+  
+</div><div id="totop"
+   style="position: fixed; bottom: 90px; right: 40px; opacity: 0;background: url(/assets/images/topbutton.png) no-repeat center center;">
+   <a id="totop_a" title="Back To Top" style="width:64px; height:64px;display: block;"></a>
+</div>
+</div><section class="page__comments d-print-none"></section></article><!-- start custom main bottom snippet -->
+
+<!-- end custom main bottom snippet -->
+</div>
+            </div></div></div><div class="page__footer d-print-none">
+<footer class="footer py-4 js-page-footer">
+  <div class="main"><div itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="phrk"><meta itemprop="url" content="https://blog.ohtoai.fun/about/"><!-- Success is not final, failure is not fatal: it is the courage to continue that counts. -->
+        <meta itemprop="description" content="Success is not final, failure is not fatal: it is the courage to continue that counts."><div class="footer__author-links"><div class="author-links">
+  <ul class="menu menu--nowrap menu--inline"><link itemprop="url" href="https://blog.ohtoai.fun/about/"><li title="Send me an Email.">
+      <a class="button button--circle mail-button" itemprop="email" href="mailto:phrknfish@outlook.com" target="_blank">
+        <i class="fas fa-envelope"></i>
+      </a><li title="Follow me on Github.">
+        <a class="button button--circle github-button" itemprop="sameAs" href="https://github.com/Real-king-Ph" target="_blank">
+          <div class="icon"><svg fill="#000000" width="24px" height="24px" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
+  <path class="svgpath" data-index="path_0" fill="#272636" d="M0 525.2c0 223.6 143.3 413.7 343 483.5 26.9 6.8 22.8-12.4 22.8-25.4l0-88.7c-155.3 18.2-161.5-84.6-172-101.7-21.1-36-70.8-45.2-56-62.3 35.4-18.2 71.4 4.6 113.1 66.3 30.2 44.7 89.1 37.2 119 29.7 6.5-26.9 20.5-50.9 39.7-69.6C248.8 728.2 181.7 630 181.7 513.2c0-56.6 18.7-108.7 55.3-150.7-23.3-69.3 2.2-128.5 5.6-137.3 66.5-6 135.5 47.6 140.9 51.8 37.8-10.2 80.9-15.6 129.1-15.6 48.5 0 91.8 5.6 129.8 15.9 12.9-9.8 77-55.8 138.8-50.2 3.3 8.8 28.2 66.7 6.3 135 37.1 42.1 56 94.6 56 151.4 0 117-67.5 215.3-228.8 243.7 26.9 26.6 43.6 63.4 43.6 104.2l0 128.8c0.9 10.3 0 20.5 17.2 20.5C878.1 942.4 1024 750.9 1024 525.3c0-282.9-229.3-512-512-512C229.1 13.2 0 242.3 0 525.2L0 525.2z" />
+</svg>
+</div>
+        </a>
+      </li></ul>
+</div>
+</div>
+    </div><div class="site-info mt-2">
+      <div>© RK's blog 2022-2023,
+        Powered by <a title="Jekyll is a simple, blog-aware, static site generator." href="http://jekyllrb.com/">Jekyll</a> & <a
+        title="TeXt is a super customizable Jekyll theme." href="https://github.com/kitian616/jekyll-TeXt-theme">TeXt Theme</a>.
+      </div>
+      <p id="hitokoto">:D loading...</p>
+      <script src="https://v1.hitokoto.cn/?encode=js&select=%23hitokoto" defer></script>
+    </div>
+  </div>
+</footer>
+</div></div>
+    </div><script src="/assets/scripts/lib/modal.js"></script><div class="modal modal--overflow page__search-modal d-print-none js-page-search-modal"></div></div>
+
+
+<script src="/assets/scripts/lib/scroll-to.js"></script>
+<script src="/assets/scripts/lib/affix.js"></script>
+<script src="/assets/scripts/lib/toc.js"></script><script src="/assets/scripts/page.js"></script><!-- toc must before affix, since affix need to konw toc' height. --><script src="/assets/scripts/aside/toc.js"></script><script src="/assets/scripts/aside/affix.js"></script>
+    </div>
+    <script src="/assets/scripts/common.js"></script>
+  </body>
+</html>
+
